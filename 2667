@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+int n;
+int check[100000] = { 0 };
+int map[50][50];
+
+bool inc(int a, int b) {
+	return a < b;
+}
+
+void dfs(int i, int j, int num) {
+	map[i][j] = num;
+
+	if (i != 0 && map[i - 1][j] == 1) {
+		dfs(i - 1, j, num);
+	}
+	if (j != 0 && map[i][j - 1] == 1) {
+		dfs(i, j - 1, num);
+	}
+	if (i != n - 1 && map[i + 1][j] == 1) {
+		dfs(i + 1, j, num);
+	}
+	if (j != n - 1 && map[i][j + 1] == 1) {
+		dfs(i, j + 1, num);
+	}
+}
+
+int main(void) {
+	int num = 2;
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%1d", &map[i][j]);
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (map[i][j] == 1) {
+				dfs(i, j, num);
+				num++;
+			}
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (map[i][j] != 0) {
+				check[map[i][j]]++;
+			}
+		}
+	}
+
+	sort(check + 2, check + num, inc);
+
+	printf("%d\n", num - 2);
+	for (int i = 2; i < num; i++) {
+		printf("%d\n", check[i]);
+	}
+
+	return 0;
+}

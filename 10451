@@ -1,0 +1,73 @@
+#include<stdio.h>
+
+int map[1010] = { 0 };
+bool cycle_check[1010] = { false };
+int save_cycle[1010] = { 0 };
+int check[1010] = { 0 };
+
+void dfs(int i, int count) {
+
+	if (count != 0 && check[i] == 5) {
+		for (int i = 0; i < count; i++) {
+			cycle_check[save_cycle[i]] = true;
+		}
+		check[i] = 10;
+		return;
+	}
+
+	if (check[map[i]] != 1) {
+		if (check[map[i]] == 5) {
+			dfs(map[i], count + 1);
+		}
+		else {
+			check[map[i]] = 1;
+			save_cycle[count] = map[i];
+			dfs(map[i], count + 1);
+			check[map[i]] = 0;
+		}
+	}
+}
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		int n;
+		int input;
+		int count = 0;
+
+		scanf("%d", &n);
+
+		for (int i = 1; i <= n; i++) {
+			scanf("%d", &input);
+			map[i] = input;
+		}
+
+		for (int i = 1; i <= n; i++) {
+			if (cycle_check[i] == false) {
+				check[i] = 5;
+				dfs(i, 0);
+				if (check[i] == 10) {
+					count++;
+				}
+				check[i] = 0;
+
+				for (int i = 0; i < n; i++) {
+					save_cycle[i] = 0;
+				}
+			}
+		}
+
+		printf("%d\n", count);
+
+		for (int i = 0; i < 1010; i++) {
+			map[i] = 0;
+			check[i] = 0;
+			cycle_check[i] = false;
+		}
+	}
+
+	return 0;
+}

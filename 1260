@@ -1,0 +1,76 @@
+#include<stdio.h>
+#include<vector>
+#include<queue>
+#include<algorithm>
+#include<utility>
+
+using namespace std;
+
+bool dfscheck[1010] = { false };
+bool bfscheck[1010] = { false };
+queue<int>bfs_queue;
+vector<pair<int, int>> edge;
+
+bool cmp(pair<int,int>a, pair<int, int>b) {
+	if (a.first==b.first) {
+		return a.second < b.second;
+	}
+
+	return a.first < b.first;
+}
+
+void dfs(int v) {
+	printf("%d ", v);
+	dfscheck[v] = true;
+
+	for (int i = 0; i < edge.size(); i++) {
+		if (edge[i].first == v) {
+			if (dfscheck[edge[i].second] == false) {
+				dfscheck[edge[i].second] = true;
+				dfs(edge[i].second);
+			}
+		}
+	}
+}
+
+void bfs(int v) {
+	bfs_queue.push(v);
+
+	while (!bfs_queue.empty()) {
+		if (bfscheck[bfs_queue.front()] == false) {
+			bfscheck[bfs_queue.front()] = true;
+			printf("%d ", bfs_queue.front());
+			for (int i = 0; i < edge.size(); i++) {
+				if (edge[i].first == bfs_queue.front()) {
+					bfs_queue.push(edge[i].second);
+				}
+			}
+		}
+		bfs_queue.pop();
+	}
+
+	return;
+}
+
+int main(void) {
+
+	int n, m, v;
+
+	scanf("%d %d %d", &n, &m, &v);
+
+	for (int i = 0; i < m; i++) {
+		int a, b;
+
+		scanf("%d %d", &a, &b);
+		edge.push_back(pair<int, int>(a, b));
+		edge.push_back(pair<int, int>(b, a));
+	}
+
+	sort(edge.begin(), edge.end(), cmp);
+
+	dfs(v);
+	printf("\n");
+	bfs(v);
+
+	return 0;
+}

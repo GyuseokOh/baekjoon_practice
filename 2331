@@ -1,0 +1,48 @@
+#include<stdio.h>
+#include<vector>
+#include<algorithm>
+#include<math.h>
+
+using namespace std;
+
+vector<double> container;
+
+void dfs(double a, double p) {
+
+	double result = 0;
+
+	if (find(container.begin(), container.end(), a) != container.end()) {
+		double pop = container.back();
+
+		while (pop != a) {
+			container.pop_back();
+			pop = container.back();
+		}
+
+		container.pop_back();
+
+		return;
+	}
+
+	container.push_back(a);
+
+	while (a != 0) {
+		result += pow((int)a % 10, p);
+		a /= 10;
+	}
+
+	dfs(result, p);
+}
+
+int main(void) {
+
+	double a, p;
+
+	scanf("%lf %lf", &a, &p);
+
+	dfs(a, p);
+
+	printf("%d\n", container.size());
+
+	return 0;
+}
