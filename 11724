@@ -1,0 +1,57 @@
+#include<stdio.h>
+#include<vector>
+#include<algorithm>
+#include<utility>
+
+using namespace std;
+
+vector<pair<int, int>> graph;
+bool check[100000] = { false };
+
+bool inc(pair<int, int>a, pair<int, int>b) {
+	if (a.first == b.first) {
+		return a.second < b.second;
+	}
+
+	return a.first < b.first;
+}
+
+void dfs(int vertex) {
+	check[vertex] = true;
+	for (int i = 0; i < graph.size(); i++) {
+		if (graph[i].first == vertex) {
+			if (check[graph[i].second] == false) {
+				dfs(graph[i].second);
+			}
+		}
+	}
+}
+
+int main(void) {
+
+	int n, m;
+	int insert1, insert2;
+	int count = 0;
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < m; i++) {
+		scanf("%d %d", &insert1, &insert2);
+		graph.push_back(pair<int, int>(insert2, insert1));
+		graph.push_back(pair<int, int>(insert1, insert2));
+	}
+
+	sort(graph.begin(), graph.end(),inc);
+
+
+	for (int i = 1; i <= n; i++) {
+		if (check[i] == false) {
+			dfs(i);
+			count++;
+		}
+	}
+
+	printf("%d\n", count);
+
+	return 0;
+}
