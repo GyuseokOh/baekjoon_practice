@@ -1,0 +1,46 @@
+#include<stdio.h>
+
+int map[110][110] = { 0, };
+bool check[110] = { false };
+int insert1, insert2;
+int result = -1;
+int n;
+
+void dfs(int insert,int count) {
+	check[insert] = true;
+
+	if (insert == insert2) {
+		result = count;
+		return;
+	}
+
+	for (int i = 1; i <= n; i++) {
+		if (i != insert && check[i] == false && map[insert][i] == 1) {
+			dfs(i, count + 1);
+		}
+	}
+
+	check[insert] = false;
+}
+
+int main(void) {
+
+	int m;
+	int x, y;
+
+	scanf("%d", &n);
+	scanf("%d %d", &insert1, &insert2);
+	scanf("%d", &m);
+
+	for (int i = 0; i < m; i++) {
+		scanf("%d %d", &x, &y);
+		map[x][y] = 1;
+		map[y][x] = 1;
+	}
+
+	dfs(insert1, 0);
+
+	printf("%d\n", result);
+
+	return 0;
+}

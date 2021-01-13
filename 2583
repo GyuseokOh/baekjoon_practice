@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+int m, n;
+int map[110][110] = { 0, };
+int result[100000] = { 0 };
+int x_dir[4] = { 1,-1,0,0 };
+int y_dir[4] = { 0,0,1,-1 };
+
+void dfs(int x, int y, int count) {
+	map[x][y] = count;
+	result[count]++;
+
+	for (int i = 0; i < 4; i++) {
+		int cur_x = x + x_dir[i];
+		int cur_y = y + y_dir[i];
+
+		if (cur_x >= 0 && cur_y >= 0 && cur_x < m&&cur_y < n) {
+			if (map[cur_x][cur_y] == 0) {
+				dfs(cur_x, cur_y, count);
+			}
+		}
+	}
+}
+
+int main(void) {
+
+	int k;
+	int count = 2;
+	int x1, y1;
+	int x2, y2;
+
+	scanf("%d %d %d", &m, &n, &k);
+
+	for (int i = 0; i < k; i++) {
+		scanf("%d %d %d %d", &y1, &x1, &y2, &x2);
+
+		for (int j = x1; j < x2; j++) {
+			for (int t = y1; t < y2; t++) {
+				map[j][t] = 1;
+			}
+		}
+	}
+
+
+	for (int i = 0; i < m; i++) {
+		for (int j = 0; j < n; j++) {
+			if (map[i][j] == 0) {
+				dfs(i, j, count);
+				count++;
+			}
+		}
+	}
+
+	printf("%d\n", count-2);
+
+	sort(result + 2, result + count);
+
+	for (int i = 2; i < count; i++) {
+		printf("%d\n", result[i]);
+	}
+
+
+	return 0;
+}

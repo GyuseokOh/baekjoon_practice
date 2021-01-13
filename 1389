@@ -1,0 +1,61 @@
+#include<stdio.h>
+
+int m, n;
+int map[110][110] = { 0 };
+int result[110] = { 0 };
+int result_copy[110] = { 0 };
+bool check[110] = { false };
+
+void dfs(int cur, int count) {
+	check[cur] = true;
+	if (result[cur] == 0) {
+		result[cur] = count;
+	}
+	else {
+		if (result[cur] > count) {
+			result[cur] = count;
+		}
+	}
+
+	for (int i = 1; i <= n; i++) {
+		if (i != cur && check[i] == false && map[cur][i] == 1) {
+			dfs(i, count + 1);
+		}
+	}
+
+	check[cur] = false;
+}
+
+int main(void) {
+
+	int a, b;
+	int final_result;
+	int min = 10000000;
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < m; i++) {
+		scanf("%d %d", &a, &b);
+		map[a][b] = 1;
+		map[b][a] = 1;
+	}
+
+	for (int i = 1; i <= n; i++) {
+		dfs(i, 0);
+		
+		for (int j = 1; j <= n; j++) {
+			result_copy[i] += result[j];
+			result[j] = 0;
+		}
+	}
+
+	for (int i = 1; i <= n; i++) {
+		if (min > result_copy[i]) {
+			min = result_copy[i];
+			final_result = i;
+		}
+	}
+
+	printf("%d\n", final_result);
+
+	return 0;
+}
