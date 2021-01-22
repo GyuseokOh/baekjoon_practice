@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<string.h>
+
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		int n;
+		double ave = 0;
+		double count = 0;
+		int insert[1010] = { 0 };
+
+		scanf("%d", &n);
+
+		for (int i = 0; i < n; i++) {
+			scanf("%d", &insert[i]);
+			ave += insert[i];
+		}
+
+		ave /= n;
+
+		for (int i = 0; i < n; i++) {
+			if (insert[i] > ave) {
+				count++;
+			}
+		}
+
+		count /= n;
+		count *= 100;
+
+		printf("%.3f%\n", count);
+	}
+
+	return 0;
+}

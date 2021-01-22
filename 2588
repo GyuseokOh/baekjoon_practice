@@ -1,0 +1,19 @@
+#include<stdio.h>
+
+int main(void) {
+
+	int a, b, b_copy;
+
+	scanf("%d %d", &a, &b);
+
+	b_copy = b;
+
+	while (b_copy != 0) {
+		printf("%d\n", a*(b_copy % 10));
+		b_copy /= 10;
+	}
+
+	printf("%d\n", a*b);
+
+	return 0;
+}

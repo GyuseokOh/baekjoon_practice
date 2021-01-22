@@ -1,0 +1,50 @@
+#include<stdio.h>
+
+bool check[1010];
+
+void han(int n) {
+	int n_copy = n;
+	int cur, next;
+	int diff;
+	if (n / 10 == 0 || n / 100 == 0) {
+		return;
+	}
+
+	cur = n_copy % 10;
+	n_copy /= 10;
+
+	next = n_copy % 10;
+	n_copy /= 10;
+	diff = next - cur;
+
+	while (n_copy != 0) {
+		cur = next;
+		next = n_copy % 10;
+		n_copy /= 10;
+
+		if (next - cur != diff) {
+			check[n] = true;
+			return;
+		}
+	}
+}
+
+int main(void) {
+
+	int n;
+	int count = 0;
+
+	scanf("%d", &n);
+
+	for (int i = 1; i <= n; i++) {
+		han(i);
+
+		if (check[i] == false) {
+			count++;
+		}
+	}
+
+	printf("%d\n", count);
+
+	return 0;
+}

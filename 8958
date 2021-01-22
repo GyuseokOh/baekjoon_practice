@@ -1,0 +1,31 @@
+#include<stdio.h>
+#include<string.h>
+
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		int score = 0;
+		int count = 0;
+		char insert[90];
+
+		scanf("%s", insert);
+
+		for (int i = 0; i < strlen(insert); i++) {
+			if (insert[i] == 'X') {
+				count = 0;
+			}
+			else {
+				count++;
+			}
+			score += count;
+		}
+
+		printf("%d\n", score);
+	}
+
+	return 0;
+}
