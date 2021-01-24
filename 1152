@@ -1,0 +1,29 @@
+#include<stdio.h>
+#include<string.h>
+
+char insert[1000010];
+
+int main(void) {
+
+	int len;
+	int num = 0;
+	int count = 0;
+
+	scanf("%[^\n]", insert);
+
+	len = strlen(insert);
+
+	while (count < len) {
+		if (insert[count] != ' ') {
+			num++;
+			while (insert[count] != ' '&&count<len-1) {
+				count++;
+			}
+		}
+		count++;
+	}
+
+	printf("%d\n", num);
+
+	return 0;
+}

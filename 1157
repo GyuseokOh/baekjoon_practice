@@ -1,0 +1,43 @@
+#include<stdio.h>
+#include<string.h>
+
+int result[27];
+char insert[1000010];
+
+int main(void) {
+
+	int max = -1;
+	int check;
+	int len;
+
+	scanf("%s", insert);
+
+	len = strlen(insert);
+
+	for (int i = 0; i < len; i++) {
+		if (insert[i] >= 'a'&&insert[i] <= 'z') {
+			result[insert[i] - 'a']++;
+		}
+		else if (insert[i] >= 'A'&&insert[i] <= 'Z') {
+			result[insert[i] - 'A']++;
+		}
+	}
+
+	for (int i = 0; i < 27; i++) {
+		if (max < result[i]) {
+			max = result[i];
+			check = i;
+		}
+	}
+
+	for (int i = 0; i < 27; i++) {
+		if (result[i] == max && i != check) {
+			printf("?\n");
+			return 0;
+		}
+	}
+
+	printf("%c\n", check + 'A');
+
+	return 0;
+}
