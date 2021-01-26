@@ -1,0 +1,33 @@
+#include<stdio.h>
+
+int main(void) {
+
+	int n;
+	int result_n = 0;
+	int count = 1;
+	bool up = false;
+
+	scanf("%d", &n);
+
+	while (result_n + count < n) {
+		result_n += count;
+		count++;
+		if (count % 2 == 0) {
+			up = false;
+		}
+		else {
+			up = true;
+		}
+	}
+
+	count++;
+
+	if (up == false) {
+		printf("%d/%d\n", n - result_n, count - (n - result_n));
+	}
+	else {
+		printf("%d/%d\n", count - (n - result_n), n - result_n);
+	}
+
+	return 0;
+}

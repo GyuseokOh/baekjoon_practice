@@ -1,0 +1,19 @@
+#include<stdio.h>
+
+int main(void) {
+
+	long long int n;
+	long long int add = 1;
+	long long int count = 1;
+
+	scanf("%lld", &n);
+
+	while (add<n) {
+		add += 6 * count;
+		count++;
+	}
+
+	printf("%lld\n", count);
+
+	return 0;
+}

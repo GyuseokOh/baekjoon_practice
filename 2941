@@ -1,0 +1,71 @@
+#include<stdio.h>
+#include<string.h>
+
+int main(void) {
+
+	char insert[400];
+	int len;
+	int result = 0;
+	int count = 0;
+
+	scanf("%s", insert);
+
+	len = strlen(insert);
+
+	while (count < len) {
+		if (insert[count] == 'c') {
+			if (count+1 < len && (insert[count + 1] == '=' || insert[count + 1] == '-')) {
+				result++;
+				count += 2;
+			}
+			else {
+				result++;
+				count++;
+			}
+		}
+		else if (insert[count] == 'd') {
+			if (count+1 < len && insert[count + 1] == '-') {
+				result++;
+				count += 2;
+			}
+			else if (count + 2 < len&&insert[count + 1] == 'z'&&insert[count + 2] == '=') {
+				result++;
+				count += 3;
+			}
+			else {
+				result++;
+				count++;
+			}
+		}
+		else if (insert[count] == 'l') {
+			if (count + 1 < len&&insert[count + 1] == 'j') {
+				result++;
+				count += 2;
+			}
+			else {
+				result++;
+				count++;
+			}
+		}
+		else if (count + 1 < len&&insert[count] == 'n'&&insert[count + 1] == 'j') {
+			result++;
+			count += 2;
+		}
+		else if (count + 1 < len&&insert[count] == 's'&&insert[count + 1] == '=') {
+			result++;
+			count += 2;
+		}
+		else if (count + 1 < len&&insert[count] == 'z'&&insert[count + 1] == '=') {
+			result++;
+			count += 2;
+		}
+		else {
+			result++;
+			count++;
+		}
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}

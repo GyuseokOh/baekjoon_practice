@@ -1,0 +1,48 @@
+#include<stdio.h>
+#include<string.h>
+
+int main(void) {
+
+	int t;
+	int result = 0;
+
+	scanf("%d", &t);
+
+	while (t--) {
+
+		bool check[27] = { false, };
+		bool flag = false;
+		char insert[110];
+		char save;
+		int len;
+		int count = 0;
+
+		scanf("%s", insert);
+
+		len = strlen(insert);
+
+		while (count < len) {
+			if (check[insert[count] - 'a'] == true) {
+				flag = true;
+				break;
+			}
+
+			check[insert[count] - 'a'] = true;
+			save = insert[count];
+
+			while (count < len&&insert[count] == save) {
+				count++;
+			}
+		}
+
+		if (flag == true) {
+			continue;
+		}
+
+		result++;
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}
