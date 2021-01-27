@@ -1,0 +1,38 @@
+#include<stdio.h>
+
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		int h, w, n;
+		int result_first;
+		int result_last;
+
+		scanf("%d %d %d", &h, &w, &n);
+
+		result_first = n % h;
+
+		if (result_first == 0) {
+			result_first = h;
+		}
+
+		if (n%h == 0) {
+			result_last = (n / h);
+		}
+		else {
+			result_last = (n / h) + 1;
+		}
+
+		if (result_last<10) {
+			printf("%d0%d\n", result_first, result_last);
+		}
+		else {
+			printf("%d%d\n", result_first, result_last);
+		}
+	}
+
+	return 0;
+}

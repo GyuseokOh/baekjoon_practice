@@ -1,0 +1,26 @@
+#include<stdio.h>
+#include<math.h>
+
+int main(void) {
+
+	long long int a, b, v;
+	double result = 1;
+
+	scanf("%lld %lld %lld", &a, &b, &v);
+
+	if (a == v) {
+		result = 1;
+	}
+	else if ((v - a) >= (a - b)) {
+		result = ceil((double)(v - a) / (a - b));
+		result++;
+	}
+	else if ((v - a) < (a - b)) {
+		result++;
+	}
+
+
+	printf("%.0f\n", result);
+
+	return 0;
+}
