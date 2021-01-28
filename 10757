@@ -1,0 +1,78 @@
+#include<stdio.h>
+#include<string.h>
+
+int result[100000] = { 0 };
+char insert1[100000], insert2[100000];
+
+int main(void) {
+
+	int len1, len2;
+	int insert1_count = 0, insert2_count = 0, result_count = 0;
+
+	scanf("%s %s", insert1, insert2);
+	len1 = strlen(insert1);
+	len2 = strlen(insert2);
+
+	for (int i = 0; i < len1/ 2; i++) {
+		char swap = insert1[i];
+		insert1[i] = insert1[len1 - 1 - i];
+		insert1[len1 - 1 - i] = swap;
+	}
+
+	for (int i = 0; i < len2 / 2; i++) {
+		char swap = insert2[i];
+		insert2[i] = insert2[len2 - 1 - i];
+		insert2[len2 - 1 - i] = swap;
+	}
+
+	while (1) {
+
+		if (insert1_count < len1&&insert2_count < len2) {
+			result[result_count] += ((insert1[insert1_count] - '0') + (insert2[insert2_count] - '0'));
+			if (result[result_count] >= 10) {
+				result[result_count] -= 10;
+				result[result_count + 1] += 1;
+			}
+
+			insert1_count++;
+			insert2_count++;
+			result_count++;
+		}
+		else if (insert1_count == len1 && insert2_count < len2) {
+			result[result_count] += (insert2[insert2_count] - '0');
+			if (result[result_count] >= 10) {
+				result[result_count] -= 10;
+				result[result_count + 1] += 1;
+			}
+			insert2_count++;
+			result_count++;
+		}
+		else if (insert2_count == len2 && insert1_count < len1) {
+			result[result_count] += (insert1[insert1_count] - '0');
+			if (result[result_count] >= 10) {
+				result[result_count] -= 10;
+				result[result_count + 1] += 1;
+			}
+			insert1_count++;
+			result_count++;
+		}
+		else {
+			break;
+		}
+	}
+
+	if (result[result_count] != 0) {
+		for (int i = result_count; i >= 0; i--) {
+			printf("%d", result[i]);
+		}
+	}
+	else {
+		for (int i = result_count - 1; i >= 0; i--) {
+			printf("%d", result[i]);
+		}
+	}
+
+	printf("\n");
+
+	return 0;
+}
