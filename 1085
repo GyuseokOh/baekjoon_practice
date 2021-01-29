@@ -1,0 +1,22 @@
+#include<stdio.h>
+
+int main(void) {
+
+	int x, y;
+	int w, h;
+
+	int min_h;
+	int min_w;
+	int min;
+
+	scanf("%d %d %d %d", &x, &y, &w, &h);
+
+	min_h = y < h - y ? y : h - y;
+	min_w = x < w - x ? x : w - x;
+
+	min = min_w < min_h ? min_w : min_h;
+
+	printf("%d\n", min);
+
+	return 0;
+}

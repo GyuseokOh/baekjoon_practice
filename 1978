@@ -1,0 +1,36 @@
+#include<stdio.h>
+#include<math.h>
+
+int main(void) {
+
+	int n;
+	int count = 0;
+
+	scanf("%d", &n);
+
+	while (n--) {
+		int insert;
+		bool check = false;
+
+		scanf("%d", &insert);
+
+		if (insert == 1) {
+			continue;
+		}
+
+		for (int i = 2; i <= sqrt((double)insert); i++) {
+			if (insert%i == 0) {
+				check = true;
+				break;
+			}
+		}
+
+		if (check == false) {
+			count++;
+		}
+	}
+
+	printf("%d\n", count);
+
+	return 0;
+}
