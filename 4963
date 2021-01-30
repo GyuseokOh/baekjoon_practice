@@ -1,0 +1,68 @@
+#include<stdio.h>
+
+int insert[55][55];
+
+void find(int i,int j,int count) {
+	insert[i][j] = count;
+
+	if (insert[i-1][j-1] == 1) {
+		find(i - 1, j - 1, count);
+	}
+	if (insert[i][j-1] == 1) {
+		find(i, j - 1,count);
+	}
+	if (insert[i+1][j-1] == 1) {
+		find(i + 1, j - 1, count);
+	}
+	if (insert[i-1][j] == 1) {
+		find(i -1, j, count);
+	}
+	if (insert[i+1][j] == 1) {
+		find(i + 1, j, count);
+	}
+	if (insert[i-1][j+1] == 1) {
+		find(i - 1, j+1, count);
+	}
+	if (insert[i][j+1] == 1) {
+		find(i, j + 1, count);
+	}
+	if (insert[i+1][j + 1] == 1) {
+		find(i + 1, j + 1, count);
+	}
+}
+
+int main(void) {
+
+	int n, m;
+	int count = 2;
+
+	while (1) {
+		scanf("%d %d", &m, &n);
+
+		if (n == 0 && m == 0) {
+			return 0;
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				scanf("%d", &insert[i][j]);
+			}
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (insert[i][j] == 1) {
+					find(i,j,count);
+					count++;
+				}
+			}
+		}
+
+		printf("%d\n", count - 2);
+
+		count = 2;
+	}
+
+
+	return 0;
+}
