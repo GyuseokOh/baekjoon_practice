@@ -1,0 +1,44 @@
+#include<stdio.h>
+#include<string.h>
+
+int find(char insert[]) {
+	int count=0;
+
+	for (int i = 0; insert[i] != 0; i++) {
+		if(insert[i]=='('){
+			count++;
+		}
+		else {
+			count--;
+		}
+
+		if (count < 0) {
+			return 1;
+		}
+	}
+
+	return count;
+}
+
+int main(void) {
+
+	int n;
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		char insert[55];
+
+		scanf("%s", insert);
+
+		if (find(insert) == 0) {
+			printf("YES\n");
+		}
+		else {
+			printf("NO\n");
+		}
+	}
+
+
+	return 0;
+}
