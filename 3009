@@ -1,0 +1,29 @@
+#include<stdio.h>
+
+int result_x_count[1010];
+int result_y_count[1010];
+
+int main(void) {
+
+	int insert[3][2];
+	int result_x, result_y;
+
+	for (int i = 0; i < 3; i++) {
+		scanf("%d %d", &insert[i][0], &insert[i][1]);
+		result_x_count[insert[i][0]]++;
+		result_y_count[insert[i][1]]++;
+	}
+
+	for (int i = 0; i < 3; i++) {
+		if (result_x_count[insert[i][0]] == 1) {
+			result_x = insert[i][0];
+		}
+		if (result_y_count[insert[i][1]] == 1) {
+			result_y = insert[i][1];
+		}
+	}
+
+	printf("%d %d\n", result_x, result_y);
+
+	return 0;
+}

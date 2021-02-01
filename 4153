@@ -1,0 +1,42 @@
+#include<stdio.h>
+#include<math.h>
+
+int main(void) {
+
+	while (1) {
+
+		double insert[3];
+		double max = -1;
+		double big = 0;
+		double small = 0;
+
+		for (int i = 0; i < 3; i++) {
+			scanf("%lf", &insert[i]);
+			if (insert[i] > max) {
+				max = insert[i];
+			}
+		}
+
+		if (insert[0] == 0 && insert[1] == 0 && insert[2] == 0) {
+			break;
+		}
+
+		big = pow(max, 2);
+
+		for (int i = 0; i < 3; i++) {
+			if (insert[i] != max) {
+				small += pow(insert[i], 2);
+			}
+		}
+
+		if (big == small) {
+			printf("right\n");
+		}
+		else {
+			printf("wrong\n");
+		}
+
+	}
+	
+	return 0;
+}
