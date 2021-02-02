@@ -1,0 +1,46 @@
+#include<stdio.h>
+
+char insert[2200][2200];
+
+void dfs(int x, int y, int n) {
+	if (n == 1) {
+		insert[x][y] = '*';
+		return;
+	}
+
+	int new_n = n / 3;
+
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			if (i == 1 && j == 1) {
+				continue;
+			}
+			
+			dfs(x + i * new_n, y + j * new_n, new_n);
+		}
+	}
+}
+
+int main(void) {
+
+	int n;
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			insert[i][j] = ' ';
+		}
+	}
+
+	dfs(0, 0, n);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			printf("%c", insert[i][j]);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
