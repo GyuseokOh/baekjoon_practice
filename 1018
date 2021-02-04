@@ -1,0 +1,81 @@
+#include<stdio.h>
+
+int main(void) {
+
+	int n, m;
+	int min = 100000000;
+	char insert[55][55];
+	char insert_copy[55][55];
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%s", insert[i]);
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			if (i + 7 < n&&j + 7 < m) {
+				for (int p = 0; p < 2; p++) {
+					int count = 0;
+
+					for (int t = i; t < i + 8; t++) {
+						for (int k = j; k < j + 8; k++) {
+							insert_copy[t][k] = insert[t][k];
+						}
+					}
+
+					if (p==0) {
+						if (insert_copy[i][j] == 'W') {
+							count++;
+						}
+						insert_copy[i][j] = 'B';
+					}
+					else {
+						if (insert_copy[i][j] == 'B') {
+							count++;
+						}
+						insert_copy[i][j] = 'W';
+					}
+					
+					for (int t = i; t < i + 8; t++) {
+						if (t == i) {
+							for (int k = j+1; k < j + 8; k++) {
+								if (insert_copy[t][k] == insert_copy[t][k - 1]) {
+									if (insert_copy[t][k] == 'W') {
+										insert_copy[t][k] = 'B';
+									}
+									else {
+										insert_copy[t][k] = 'W';
+									}
+									count++;
+								}
+							}
+						}
+						else {
+							for (int k = j; k < j + 8; k++) {
+								if (insert_copy[t][k] == insert_copy[t - 1][k]) {
+									if (insert_copy[t][k] == 'W') {
+										insert_copy[t][k] = 'B';
+									}
+									else {
+										insert_copy[t][k] = 'W';
+									}
+									count++;
+								}
+							}
+						}
+					}
+
+					if (min > count) {
+						min = count;
+					}
+				}
+			}
+		}
+	}
+
+	printf("%d\n", min);
+
+	return 0;
+}

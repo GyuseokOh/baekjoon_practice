@@ -1,0 +1,32 @@
+#include<stdio.h>
+
+int main(void) {
+
+	int insert[55][2];
+	int result[55];
+	int n;
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		result[i] = 1;
+		scanf("%d %d", &insert[i][0], &insert[i][1]);
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (j != i) {
+				if (insert[i][0] < insert[j][0] && insert[i][1] < insert[j][1]) {
+					result[i]++;
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		printf("%d ", result[i]);
+	}
+	printf("\n");
+
+	return 0;
+}

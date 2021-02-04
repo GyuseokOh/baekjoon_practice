@@ -1,0 +1,47 @@
+#include<stdio.h>
+
+int insert[110];
+int result_copy[3];
+int result;
+int min = 100000000;
+bool check[110];
+
+void dfs(int add, int count,int n, int m) {
+	if (count == 3) {
+		if (add <= m) {
+			int between = m - add;
+			if (between < min) {
+				min = between;
+				result = add;
+			}
+
+		}
+		return;
+	}
+
+	for (int i = 0; i < n; i++) {
+		if (check[i] == false) {
+			check[i] = true;
+			result_copy[count] = insert[i];
+			dfs(add + insert[i], count + 1, n, m);
+			check[i] = false;
+		}
+	}
+}
+
+int main(void) {
+
+	int n, m;
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &insert[i]);
+	}
+
+	dfs(0, 0, n, m);
+
+	printf("%d\n", result);
+
+	return 0;
+}
