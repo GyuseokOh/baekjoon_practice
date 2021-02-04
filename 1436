@@ -1,0 +1,41 @@
+#include<stdio.h>
+
+int main(void) {
+
+	int n;
+	int num = 665;
+	int count = 0;
+
+	scanf("%d", &n);
+
+	while (1) {
+		int div = 10;
+		int num_copy = num;
+		int len = 0;
+		int insert[10000];
+
+		while (num_copy != 0) {
+			insert[len++] = (num_copy % 10);
+			num_copy /= 10;
+		}
+
+		for (int i = 0; i < len; i++) {
+			if (insert[i] == 6 && i + 2 < len) {
+				if (insert[i + 1] == 6 && insert[i + 2] == 6) {
+					count++;
+					break;
+				}
+			}
+		}
+
+
+		if (count == n) {
+			printf("%d\n", num);
+			break;
+		}
+
+		num++;
+	}
+
+	return 0;
+}
