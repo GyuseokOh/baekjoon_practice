@@ -1,0 +1,29 @@
+#include<stdio.h>
+
+int main(void) {
+
+	int insert[1010];
+	int n;
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &insert[i]);
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n - i - 1; j++) {
+			if (insert[j] > insert[j + 1]) {
+				int temp = insert[j];
+				insert[j] = insert[j + 1];
+				insert[j + 1] = temp;
+			}
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		printf("%d\n", insert[i]);
+	}
+
+	return 0;
+}
