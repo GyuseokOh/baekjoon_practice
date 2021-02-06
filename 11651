@@ -1,0 +1,40 @@
+#include<stdio.h>
+#include<algorithm>
+#include<vector>
+
+using namespace std;
+
+typedef struct {
+	int x;
+	int y;
+}xy;
+
+bool inc(xy insert1, xy insert2) {
+	if (insert1.y == insert2.y) {
+		return insert1.x < insert2.x;
+	}
+
+	return insert1.y < insert2.y;
+}
+
+int main(void) {
+
+	int n;
+	int x, y;
+	vector<xy> insert;
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d %d", &x, &y);
+		insert.push_back({ x,y });
+	}
+
+	sort(insert.begin(), insert.end(), inc);
+
+	for (int i = 0; i < insert.size(); i++) {
+		printf("%d %d\n", insert[i].x, insert[i].y);
+	}
+
+	return 0;
+}

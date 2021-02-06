@@ -1,0 +1,44 @@
+#include<stdio.h>
+#include<string.h>
+#include<algorithm>
+
+using namespace std;
+
+typedef struct {
+	int len;
+	char word[55];
+}word;
+
+bool cmp(word insert1,word insert2) {
+	if (insert1.len == insert2.len) {
+		return strcmp(insert1.word, insert2.word) < 0;
+	}
+
+	return insert1.len < insert2.len;
+}
+
+int n;
+word insert[20010];
+
+int main(void) {
+
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		char cur_insert[55];
+		scanf("%s", insert[i].word);
+		insert[i].len = strlen(insert[i].word);
+	}
+
+	sort(insert, insert + n, cmp);
+
+	for (int i = 0; i < n; i++) {
+		if (i + 1 < n&&strcmp(insert[i].word, insert[i + 1].word)==0) {
+			continue;
+		}
+		printf("%s\n", insert[i].word);
+	}
+
+	return 0;
+}
