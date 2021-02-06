@@ -1,0 +1,35 @@
+#include<stdio.h>
+#include<string.h>
+#include<algorithm>
+
+using namespace std;
+
+typedef struct {
+	int age;
+	char name[110];
+}user;
+
+user insert[100010];
+
+bool cmp(user insert1, user insert2) {
+	return insert1.age < insert2.age;
+}
+
+int main(void) {
+
+	int n;
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d %s", &insert[i].age,insert[i].name);
+	}
+
+	stable_sort(insert, insert + n, cmp);
+
+	for (int i = 0; i < n; i++) {
+		printf("%d %s\n", insert[i].age, insert[i].name);
+	}
+
+	return 0;
+}
