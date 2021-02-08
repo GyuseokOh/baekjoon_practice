@@ -1,0 +1,42 @@
+#include<stdio.h>
+
+int result[10];
+
+bool check(int num, int len) {
+	for (int i = 0; i < len; i++) {
+		if (result[i] == num) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void dfs(int n, int m, int len) {
+	if (len == m) {
+		for (int i = 0; i < len; i++) {
+			printf("%d ", result[i]);
+		}
+		printf("\n");
+
+		return;
+	}
+
+	for (int i = 1; i <= n; i++) {
+		if (check(i, len)) {
+			result[len] = i;
+			dfs(n, m, len + 1);
+		}
+	}
+}
+
+int main(void) {
+
+	int n, m;
+
+	scanf("%d %d", &n, &m);
+
+	dfs(n, m, 0);
+
+	return 0;
+}

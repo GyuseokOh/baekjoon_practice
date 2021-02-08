@@ -1,0 +1,49 @@
+#include<stdio.h>
+
+int result_count = 0;
+int result[20];
+
+bool check(int count, int num) {
+
+	for (int i = 0; i < count; i++) {
+		if (result[i] == num) {
+			return false;
+		}
+
+		int row_gap = count - i;
+		int col_gap = result[i] > num ? result[i] - num : num - result[i];
+
+		if (row_gap == col_gap) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void queen(int n, int count) {
+	if (count == n) {
+		result_count++;
+		return;
+	}
+
+	for (int i = 0; i < n; i++) {
+		if (check(count, i)) {
+			result[count] = i;
+			queen(n, count + 1);
+		}
+	}
+}
+
+int main(void) {
+
+	int n;
+
+	scanf("%d", &n);
+
+	queen(n, 0);
+
+	printf("%d\n", result_count);
+
+	return 0;
+}

@@ -1,0 +1,30 @@
+#include<stdio.h>
+
+int result[10];
+
+void dfs(int n, int m, int cur, int len) {
+	if (len == m) {
+		for (int i = 0; i < len; i++) {
+			printf("%d ", result[i]);
+		}
+		printf("\n");
+
+		return;
+	}
+
+	for (int i = cur; i <= n; i++) {
+		result[len] = i;
+		dfs(n, m, i, len + 1);
+	}
+}
+
+int main(void) {
+
+	int n, m;
+
+	scanf("%d %d", &n, &m);
+
+	dfs(n, m, 1, 0);
+
+	return 0;
+}
