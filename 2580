@@ -1,0 +1,54 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int insert[10][10];
+bool row[10][10];
+bool col[10][10];
+bool box[10][10];
+
+void dfs(int count) {
+	if (count == 81) {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				printf("%d ", insert[i][j]);
+			}
+			printf("\n");
+		}
+
+		exit(0);
+	}
+
+	int x = count / 9;
+	int y = count % 9;
+
+	if (insert[x][y] == 0) {
+		for (int i = 1; i<=9; i++) {
+			if (row[x][i] == false && col[y][i] == false && box[3 * (x / 3) + (y / 3)][i] == false) {
+				row[x][i] = col[y][i] = box[3 * (x / 3) + (y / 3)][i] = true;
+				insert[x][y] = i;
+				dfs(count + 1);
+				insert[x][y] = 0;
+				row[x][i] = col[y][i] = box[3 * (x / 3) + (y / 3)][i] = false;
+			}
+		}
+	}
+	else {
+		dfs(count + 1);
+	}
+}
+
+int main(void) {
+
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			scanf("%d", &insert[i][j]);
+			row[i][insert[i][j]] = true;
+			col[j][insert[i][j]] = true;
+			box[(i / 3) * 3 + j / 3][insert[i][j]] = true;
+		}
+	}
+
+	dfs(0);
+
+	return 0;
+}

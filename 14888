@@ -1,0 +1,82 @@
+#include<stdio.h>
+#include<limits.h>
+
+int insert[20];
+int oper[10];
+int oper_count[10];
+int result[20];
+int n;
+int max = INT_MIN;
+int min = INT_MAX;
+
+void dfs(int count) {
+	if (count == n - 1) {
+		int cur_result = insert[0];
+		int insert_count = 1;
+		int result_count = 0;
+
+		while (insert_count < n) {
+			int cur_num = insert[insert_count++];
+			int cur_op = result[result_count++];
+
+			if (cur_op == 0) {
+				cur_result += cur_num;
+			}
+			else if (cur_op == 1) {
+				cur_result -= cur_num;
+			}
+			else if (cur_op == 2) {
+				cur_result *= cur_num;
+			}
+			else if (cur_op == 3) {
+				if (cur_result < 0 && cur_num>0) {
+					cur_result = -(cur_result);
+					cur_result /= cur_num;
+					cur_result = -(cur_result);
+				}
+				else {
+					cur_result /= cur_num;
+				}
+			}
+		}
+
+		if (max < cur_result) {
+			max = cur_result;
+		}
+
+		if (min > cur_result) {
+			min = cur_result;
+		}
+
+		return;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		if (oper_count[i] < oper[i]) {
+			oper_count[i]++;
+			result[count] = i;
+			dfs(count + 1);
+			oper_count[i]--;
+		}
+	}
+
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &insert[i]);
+	}
+
+	for (int i = 0; i < 4; i++) {
+		scanf("%d", &oper[i]);
+	}
+
+	dfs(0);
+
+	printf("%d\n%d\n", max, min);
+
+	return 0;
+}
