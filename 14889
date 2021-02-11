@@ -1,0 +1,63 @@
+#include<stdio.h>
+
+int insert[22][22];
+int another_result[20];
+bool check[22];
+int n;
+int diff = 100000000;
+
+void dfs(int cur, int count) {
+
+	if (count == n / 2) {
+		int start = 0;
+		int link = 0;
+		int another_result_count = 0;
+
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				if (i != j) {
+					if (check[i] == false && check[j] == false) {
+						link += insert[i][j];
+					}
+					else if (check[i] == true && check[j]==true) {
+						start += insert[i][j];
+					}
+				}
+			}
+		}
+
+		int cur_diff = start > link ? start - link : link - start;
+
+		if (cur_diff < diff) {
+			diff = cur_diff;
+		}
+
+		return;
+	}
+
+	for (int i = cur; i <= n; i++) {
+		if (check[i] == false) {
+			check[i] = true;
+			dfs(i+1, count + 1);
+			check[i] = false;
+		}
+	}
+
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			scanf("%d", &insert[i][j]);
+		}
+	}
+
+	dfs(1, 0);
+
+	printf("%d\n", diff);
+
+	return 0;
+}
