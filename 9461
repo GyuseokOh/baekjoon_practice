@@ -1,0 +1,24 @@
+#include<stdio.h>
+
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		long long int result[110] = { 0,1,1,1,2,2,3,4,5,7,9 };
+		int n;
+
+		scanf("%d", &n);
+
+		for (int i = 11; i <= n; i++) {
+			result[i] = result[i - 1] + result[i - 5];
+		}
+
+		printf("%lld\n", result[n]);
+
+	}
+
+	return 0;
+}

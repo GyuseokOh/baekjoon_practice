@@ -1,0 +1,26 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+int main(void) {
+
+	int result[1010][3];
+	int r, g, b;
+	int n;
+
+	scanf("%d", &n);
+
+	result[0][0] = result[0][1] = result[0][2] = 0;
+
+	for (int i = 1; i <= n; i++) {
+		scanf("%d %d %d", &r, &g, &b);
+		result[i][0] = min(result[i - 1][1], result[i - 1][2]) + r;
+		result[i][1] = min(result[i - 1][0], result[i - 1][2]) + g;
+		result[i][2] = min(result[i - 1][0], result[i - 1][1]) + b;
+	}
+
+	printf("%d\n", min(result[n][0], (min(result[n][1], result[n][2]))));
+
+	return 0;
+}

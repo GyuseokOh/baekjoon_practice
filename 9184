@@ -1,0 +1,55 @@
+#include<stdio.h>
+
+
+int main(void) {
+
+	int a, b, c;
+
+	while (1) {
+
+		int w[55][55][55];
+		int a_copy, b_copy, c_copy;
+
+		scanf("%d %d %d", &a, &b, &c);
+
+		if (a == -1 && b == -1 && c == -1) {
+			break;
+		}
+
+		if (a <= 0 || b <= 0 || c <= 0) {
+			printf("w(%d, %d, %d) = %d\n", a, b, c, 1);
+		}
+		else {
+			if (a > 20 || b > 20 || c > 20) {
+				a_copy = 20;
+				b_copy = 20;
+				c_copy = 20;
+			}
+			else {
+				a_copy = a;
+				b_copy = b;
+				c_copy = c;
+			}
+
+			for (int a_count=0; a_count <= a_copy; a_count++) {
+				for (int b_count=0; b_count <= b_copy; b_count++) {
+					for (int c_count=0; c_count <= c_copy; c_count++) {
+						if (a_count == 0 || b_count == 0 || c_count == 0) {
+							w[a_count][b_count][c_count] = 1;
+						}
+						else if (a_count < b_count&&b_count < c_count) {
+							w[a_count][b_count][c_count] = w[a_count][b_count][c_count - 1] + w[a_count][b_count - 1][c_count - 1] - w[a_count][b_count - 1][c_count];
+						}
+						else {
+							w[a_count][b_count][c_count] = w[a_count - 1][b_count][c_count] + w[a_count - 1][b_count - 1][c_count] + w[a_count - 1][b_count][c_count - 1] - w[a_count - 1][b_count - 1][c_count - 1];
+						}
+					}
+				}
+			}
+
+			printf("w(%d, %d, %d) = %d\n", a, b, c, w[a_copy][b_copy][c_copy]);
+		}
+	}
+
+	return 0;
+}

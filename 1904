@@ -1,0 +1,22 @@
+#include<stdio.h>
+
+int insert[1000010];
+
+int main(void) {
+
+	int n;
+
+	insert[1] = 1;
+	insert[2] = 2;
+
+	scanf("%d", &n);
+
+	for (int i = 3; i <= n; i++) {
+		insert[i] = insert[i - 1] + insert[i - 2];
+		insert[i] %= 15746;
+	}
+
+	printf("%d\n", insert[n]);
+
+	return 0;
+}
