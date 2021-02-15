@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+int n;
+int memo[1000010];
+
+int dfs(int cur_n) {
+
+	int three = 100000;
+	int two = 100000;
+	int minus = 100000;
+
+	if (cur_n == 1) {
+		return 0;
+	}
+
+	if (memo[cur_n] != 0) {
+		return memo[cur_n];
+	}
+
+	if (cur_n % 3 == 0) {
+		three = dfs(cur_n / 3) + 1;
+	}
+	if (cur_n % 2 == 0) {
+		two = dfs(cur_n / 2) + 1;
+	}
+	minus = dfs(cur_n - 1) + 1;
+
+	return memo[cur_n] = min(three, min(two, minus));
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	printf("%d\n",dfs(n));
+
+	return 0;
+}
