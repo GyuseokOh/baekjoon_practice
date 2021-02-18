@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+
+typedef struct {
+	int a;
+	int b;
+}ins;
+
+vector<ins> insert;
+int result[550];
+
+bool inc(ins insert1, ins insert2) {
+	return insert1.a < insert2.a;
+}
+
+int binary(int left, int right, int target) {
+	int mid;
+
+	while (left < right) {
+		mid = (left + right) / 2;
+
+		if (result[mid] < target) {
+			left = mid + 1;
+		}
+		else {
+			right = mid;
+		}
+	}
+
+	return right;
+}
+
+int main(void) {
+	int count = 0;
+	int x, y;
+	int n;
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d %d", &x, &y);
+		result[i] = 1;
+		insert.push_back({ x,y });
+	}
+
+	sort(insert.begin(), insert.end(), inc);
+
+	result[count] = insert[0].b;
+
+	for (int i = 1; i < n; i++) {
+		if (result[count] < insert[i].b) {
+			result[++count] = insert[i].b;
+		}
+		else {
+			int temp = binary(0, count, insert[i].b);
+			result[temp] = insert[i].b;
+		}
+	}
+
+	printf("%d\n", n-(count + 1));
+	
+
+	return 0;
+}

@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<string.h>
+#include<algorithm>
+
+using namespace std;
+
+char insert1[1010];
+char insert2[1010];
+int result[1010][1010];
+
+int main(void) {
+	int len1;
+	int len2;
+
+	scanf("%s", &insert1[1]);
+	scanf("%s", &insert2[1]);
+	insert1[0] = insert2[0] = '0';
+
+	len1 = strlen(insert1);
+	len2 = strlen(insert2);
+
+	for (int i = 0; i < len1; i++) {
+		for (int j = 0; j < len2; j++) {
+			if (i == 0 || j == 0) {
+				result[i][j] = 0;
+			}
+			else {
+				if (insert1[i] == insert2[j]) {
+					result[i][j] = result[i - 1][j - 1] + 1;
+				}
+				else {
+					result[i][j] = max(result[i - 1][j], result[i][j - 1]);
+				}
+			}
+		}
+	}
+
+	printf("%d\n", result[len1 - 1][len2 - 1]);
+
+	return 0;
+}
