@@ -1,0 +1,33 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+int n, k;
+int insert_w[110];
+int insert_v[110];
+int result[110][100010];
+
+int main(void) {
+
+	scanf("%d %d", &n, &k);
+
+	for (int i = 1; i <= n; i++) {
+		scanf("%d %d", &insert_w[i], &insert_v[i]);
+	}
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= k; j++) {
+			if (j >= insert_w[i]) {
+				result[i][j] = max(result[i - 1][j], result[i - 1][j - insert_w[i]] + insert_v[i]);
+			}
+			else {
+				result[i][j] = result[i - 1][j];
+			}
+		}
+	}
+
+	printf("%d\n", result[n][k]);
+
+	return 0;
+}
