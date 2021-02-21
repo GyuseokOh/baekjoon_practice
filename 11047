@@ -1,0 +1,25 @@
+#include<stdio.h>
+
+int insert[15];
+int n, money;
+int count = 0;
+
+int main(void) {
+
+	scanf("%d %d", &n, &money);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &insert[i]);
+	}
+
+	for (int i = n - 1; i >= 0; i--) {
+		if (insert[i] <= money) {
+			count += (money / insert[i]);
+			money %= insert[i];
+		}
+	}
+
+	printf("%d\n", count);
+
+	return 0;
+}
