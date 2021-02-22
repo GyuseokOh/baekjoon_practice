@@ -1,0 +1,66 @@
+#include<stdio.h>
+#include<limits.h>
+#include<algorithm>
+#include<vector>
+
+using namespace std;
+
+typedef struct {
+	int start;
+	int end;
+}ins;
+
+bool inc(ins a, ins b) {
+	if (a.end == b.end) {
+		return a.start < b.start;
+	}
+
+	return a.end < b.end;
+}
+
+vector <ins> insert;
+int result = 0;
+bool flag = false;
+int cur_end = INT_MAX;
+int cur_end_i;
+int result_max = -1;
+int n;
+
+int main(void) {
+
+	int insert1, insert2;
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d %d", &insert1, &insert2);
+		if (insert2 < cur_end) {
+			cur_end = insert2;
+		}
+		insert.push_back({ insert1,insert2 });
+	}
+
+	sort(insert.begin(), insert.end(), inc);
+
+	result = 1;
+
+	for (int j = 0; j < n; j++) {
+		if (insert[j].end = cur_end&&flag==false) {
+			flag = true;
+			for (int i = 1; i < n; i++) {
+				if (insert[i].start >= cur_end) {
+					result++;
+					cur_end = insert[i].end;
+				}
+			}
+
+			if (result > result_max) {
+				result_max = result;
+			}
+		}
+	}
+
+	printf("%d\n", result_max);
+
+	return 0;
+}
