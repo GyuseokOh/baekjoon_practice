@@ -1,0 +1,72 @@
+#include<stdio.h>
+#include<string.h>
+
+char insert[55];
+int numbers[55];
+int number_count = 0;
+int ops[55];
+int op_count = 0;
+int count = 0;
+int before_op = -1;
+int len;
+int n = 0;
+int result = 0;
+
+int main(void) {
+
+	scanf("%s", &insert);
+
+	len = strlen(insert);
+
+	while (count < len) {
+		if (insert[count] == '+' || insert[count] == '-') {
+			if (insert[count] == '+') {
+				ops[op_count++] = 0;
+			}
+			else {
+				ops[op_count++] = 1;
+			}
+			int cur_num = 0;
+			int ten = 1;
+			for (int i = count - 1; i > before_op; i--) {
+				cur_num += ten * (insert[i] - '0');
+				ten *= 10;
+			}
+			numbers[number_count++] = cur_num;
+			before_op = count;
+		}
+		else if (count == len - 1) {
+			int cur_num = 0;
+			int ten = 1;
+			for (int i = count; i > before_op; i--) {
+				cur_num += ten * (insert[i] - '0');
+				ten *= 10;
+			}
+			numbers[number_count++] = cur_num;
+		}
+		count++;
+	}
+
+	result += numbers[0];
+
+	while (n < op_count) {
+		if (ops[n] == 0) {
+			result += numbers[n + 1];
+			n++;
+		}
+		else {
+			int op_cur_count = n;
+			int cur_add = 0;
+			while (ops[op_cur_count] != '-' && op_cur_count<op_count) {
+				cur_add += numbers[op_cur_count + 1];
+				op_cur_count++;
+			}
+			result -= cur_add;
+			n = op_cur_count;
+		}
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}

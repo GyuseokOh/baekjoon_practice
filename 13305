@@ -1,0 +1,39 @@
+#include<stdio.h>
+
+int n;
+long long int distance[100010];
+long long int oil[100010];
+
+int main(void) {
+
+	long long int result = 0;
+	int oil_count = 0;
+	int distance_count = 0;
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n - 1; i++) {
+		scanf("%lld", &distance[i]);
+	}
+
+	for (int i = 0; i < n; i++) {
+		scanf("%lld", &oil[i]);
+	}
+
+	while (oil_count < n) {
+		int new_oil_count = oil_count + 1;
+
+		result += (oil[oil_count] * distance[oil_count]);
+
+		while (oil[oil_count] < oil[new_oil_count]) {
+			result += (oil[oil_count] * distance[new_oil_count]);
+			new_oil_count++;
+		}
+
+		oil_count = new_oil_count;
+	}
+
+	printf("%lld\n", result);
+
+	return 0;
+}
