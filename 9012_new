@@ -1,0 +1,51 @@
+#include<stdio.h>
+#include<string.h>
+#include<vector>
+
+using namespace std;
+
+int main(void) {
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+
+		vector<char> stack;
+		char insert[55];
+		int len;
+		bool flag = false;
+
+		scanf("%s", insert);
+
+		len = strlen(insert);
+
+		for (int i = 0; i < len; i++) {
+			if (insert[i] == ')') {
+				if (stack.empty() == true) {
+					printf("NO\n");
+					flag = true;
+					break;
+				}
+				else {
+					stack.pop_back();
+				}
+			}
+			else {
+				stack.push_back('(');
+			}
+		}
+
+		if (stack.empty() != true) {
+			printf("NO\n");
+		}
+		else {
+			if (flag == false) {
+				printf("YES\n");
+			}
+		}
+
+	}
+	
+	return 0;
+}
