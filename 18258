@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<string.h>
+
+int queue[2000000];
+int front=0, rear=0;
+int count = 0;
+int n;
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	while (n--) {
+		char insert[10];
+
+		scanf("%s", insert);
+
+		if (strcmp(insert, "push") == 0) {
+			int num;
+
+			scanf("%d", &num);
+
+			queue[rear] = num;
+			rear = (rear + 1) % 2000000;
+			count++;
+		}
+		else if (strcmp(insert, "pop") == 0) {
+			if (rear == front) {
+				printf("-1\n");
+			}
+			else {
+				printf("%d\n", queue[front]);
+				front = (front + 1) % 2000000;
+				count--;
+			}
+		}
+		else if (strcmp(insert, "size") == 0) {
+			printf("%d\n", count);
+		}
+		else if (strcmp(insert, "empty") == 0) {
+			if (rear == front) {
+				printf("1\n");
+			}
+			else {
+				printf("0\n");
+			}
+		}
+		else if (strcmp(insert, "front") == 0) {
+			if (rear == front) {
+				printf("-1\n");
+			}
+			else {
+				printf("%d\n", queue[front]);
+			}
+		}
+		else if (strcmp(insert, "back") == 0) {
+			if (rear == front) {
+				printf("-1\n");
+			}
+			else {
+				printf("%d\n", queue[rear-1]);
+			}
+		}
+	}
+
+	return 0;
+}
