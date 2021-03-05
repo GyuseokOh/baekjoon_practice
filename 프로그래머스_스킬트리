@@ -1,0 +1,135 @@
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+
+// 파라미터로 주어지는 문자열은 const로 주어집니다. 변경하려면 문자열을 복사해서 사용하세요.
+// skill_trees_len은 배열 skill_trees의 길이입니다.
+int solution(const char* skill, const char* skill_trees[], size_t skill_trees_len) {
+    int answer = 0;
+
+    for(int i=0;i<skill_trees_len;i++){
+        char check[100];
+        int count=0;
+
+        for(int j=0;j<strlen(skill_trees[i]);j++){
+            for(int t=0;t<strlen(skill);t++){
+                if(skill[t]==skill_trees[i][j]){
+                    check[count++]=skill_trees[i][j];
+                    break;
+                }
+            }
+        }
+
+        check[count]='\0';
+        printf("%s\n",check);
+
+        if(strncmp(skill,check,count)==0){
+            answer++;
+        }
+    }
+
+    /*for(int i=0;i<skill_trees_len;i++){
+        bool check[26]={false};
+        bool skill_check[30]={false};
+        bool flag=true;
+
+        for(int j=0;j<strlen(skill);j++){
+            skill_check[skill[j]-'A']=true;
+        }
+
+        printf("%s\n",skill_trees[i]);
+
+        for(int j=0;j<strlen(skill_trees[i]);j++){
+            if(skill_check[skill_trees[i][j]-'A']==true){
+                for(int t=0;t<strlen(skill);t++){
+                    if(skill[t]!=skill_trees[i][j]&&skill_check[t]==false){
+                        flag=false;
+                        break;
+                    }
+                    else{
+                        skill_check[t]=true;
+                    }
+                }
+            }
+
+            if(flag==false){
+                break;
+            }
+        }
+
+        if(flag==true){
+            answer++;
+        }
+    }*/
+
+    return answer;
+}
