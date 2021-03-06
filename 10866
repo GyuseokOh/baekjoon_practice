@@ -1,0 +1,80 @@
+#include<stdio.h>
+#include<string.h>
+
+int n;
+int count = 0;
+int front = 20000;
+int rear = 20000;
+int result[40000];
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	while (n--) {
+		char insert[15];
+		scanf("%s", insert);
+
+		if (strcmp(insert, "push_front") == 0) {
+			int num;
+			scanf("%d", &num);
+			result[--front] = num;
+			count++;
+		}
+		else if (strcmp(insert, "push_back")==0) {
+			int num;
+			scanf("%d", &num);
+			result[rear++] = num;
+			count++;
+		}
+		else if (strcmp(insert, "pop_front") == 0) {
+			if (count == 0) {
+				printf("-1\n");
+			}
+			else {
+				printf("%d\n", result[front]);
+				front++;
+				count--;
+			}
+		}
+		else if (strcmp(insert, "pop_back") == 0) {
+			if (count == 0) {
+				printf("-1\n");
+			}
+			else {
+				printf("%d\n", result[rear - 1]);
+				rear--;
+				count--;
+			}
+		}
+		else if (strcmp(insert, "size") == 0) {
+			printf("%d\n", count);
+		}
+		else if (strcmp(insert, "empty") == 0) {
+			if (count == 0) {
+				printf("1\n");
+			}
+			else {
+				printf("0\n");
+			}
+		}
+		else if (strcmp(insert, "front") == 0) {
+			if (count == 0) {
+				printf("-1\n");
+			}
+			else {
+				printf("%d\n", result[front]);
+			}
+		}
+		else if (strcmp(insert, "back") == 0) {
+			if (count == 0) {
+				printf("-1\n");
+			}
+			else {
+				printf("%d\n", result[rear - 1]);
+			}
+		}
+	}
+
+	return 0;
+}

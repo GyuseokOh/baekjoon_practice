@@ -1,0 +1,66 @@
+#include<stdio.h>
+#include<queue>
+
+using namespace std;
+
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		int n, m;
+		int count = 0;
+		queue <int> q;
+		int insert[110];
+		bool check[110] = { false, };
+		int result_num;
+		int cur_max = -1;
+
+		scanf("%d %d", &n, &m);
+
+		for (int i = 0; i < n; i++) {
+			scanf("%d", &insert[i]);
+			if (i == m) {
+				result_num = i;
+			}
+			if (insert[i] > cur_max) {
+				cur_max = insert[i];
+			}
+			q.push(i);
+		}
+
+		while (1) {
+			int cur_num = q.front();
+
+			q.pop();
+
+			if (cur_num == result_num && cur_max==insert[cur_num]) {
+				count++;
+				break;
+			}
+			else if (cur_max == insert[cur_num]) {
+				check[cur_num] = true;
+				int cur_size = q.size();
+				cur_max = -1;
+				count++;
+				for (int i = 0; i < cur_size; i++) {
+					int cur_num_copy = q.front();
+					q.pop();
+					if (check[cur_num_copy]==false&&insert[cur_num_copy] > cur_max) {
+						cur_max = insert[cur_num_copy];
+					}
+					q.push(cur_num_copy);
+				}
+			}
+			else {
+				q.push(cur_num);
+			}
+		}
+
+		printf("%d\n", count);
+	}
+
+	return 0;
+}
