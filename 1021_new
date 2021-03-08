@@ -1,0 +1,78 @@
+#include<stdio.h>
+#include<deque>
+
+using namespace std;
+
+int main(void) {
+
+	int n, m;
+	int insert[100];
+	int result = 0;
+	deque<int> dq;
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < m; i++) {
+		scanf("%d", &insert[i]);
+	}
+
+	for (int i = 1; i <= n; i++) {
+		dq.push_back(i);
+	}
+
+	for (int i = 0; i < m; i++) {
+		int size = dq.size();
+		int check;
+		int left;
+		int right;
+
+		for (int j = 0; j < size; j++) {
+			if (dq[j] == insert[i]) {
+				check = j;
+				break;
+			}
+		}
+
+		check++;
+
+		if (check == 0) {
+			left = 0;
+		}
+		else {
+			left = check - 1;
+		}
+		right = size - (check - 1);
+
+		if (left <= right) {
+			result += left;
+			while (1) {
+				int cur = dq.front();
+				dq.pop_front();
+
+				if (cur == insert[i]) {
+					break;
+				}
+
+				dq.push_back(cur);
+			}
+		}
+		else {
+			result += right;
+			while (1) {
+				int cur = dq.back();
+				dq.pop_back();
+
+				if (cur == insert[i]) {
+					break;
+				}
+
+				dq.push_front(cur);
+			}
+		}
+
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}
