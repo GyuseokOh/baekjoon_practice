@@ -1,0 +1,104 @@
+#include<stdio.h>
+#include<string.h>
+#include<deque>
+
+using namespace std;
+
+char func[100010];
+int n;
+char numbers[1000010];
+
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		int func_len;
+		int numbers_len;
+		bool err_check = false;
+		bool r_check = false;
+		deque <int> dq;
+
+		scanf("%s", func);
+		scanf("%d", &n);
+		scanf("%s", numbers);
+
+		func_len = strlen(func);
+		numbers_len = strlen(numbers);
+
+		int count = numbers_len - 1;
+
+		while (count >= 0) {
+			if (numbers[count] == '[' || numbers[count] == ']' || numbers[count] == ',') {
+				count--;
+			}
+			else {
+				int ten = 1;
+				int cur = 0;
+				while (numbers[count] != '[' && numbers[count] != ']' && numbers[count] != ',') {
+					cur += ((numbers[count] - '0')*ten);
+					ten *= 10;
+					count--;
+				}
+				dq.push_front(cur);
+			}
+		}
+
+		for (int i = 0; i < func_len; i++) {
+			if (err_check == true) {
+				break;
+			}
+
+			if (func[i] == 'R') {
+				r_check = !r_check;
+			}
+			else {
+				if (n > 0) {
+					if (r_check == false) {
+						dq.pop_front();
+					}
+					else {
+						dq.pop_back();
+					}
+					n--;
+				}
+				else {
+					err_check = true;
+				}
+			}
+		}
+
+		if (err_check == true) {
+			printf("error\n");
+		}
+		else {
+			printf("[");
+			if (r_check == false) {
+
+				for (int i = 0; i < n; i++) {
+					if (i == n - 1) {
+						printf("%d", dq[i]);
+					}
+					else {
+						printf("%d,", dq[i]);
+					}
+				}
+			}
+			else {
+				for (int i = n-1; i >= 0; i--) {
+					if (i == 0) {
+						printf("%d", dq[i]);
+					}
+					else {
+						printf("%d,", dq[i]);
+					}
+				}
+			}
+			printf("]\n");
+		}
+	}
+
+	return 0;
+}
