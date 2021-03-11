@@ -1,0 +1,75 @@
+#include<stdio.h>
+
+int n;
+int insert[2200][2200];
+int mcount = 0;
+int zcount = 0;
+int ocount = 0;
+
+bool check(int row, int col, int len) {
+	int cur = insert[row][col];
+
+	for (int i = row; i < row + len; i++) {
+		for (int j = col; j < col + len; j++) {
+			if (insert[i][j] != cur) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+void func(int row, int col, int len) {
+
+	if (len == 1) {
+		if (insert[row][col] == -1) {
+			mcount++;
+		}
+		else if (insert[row][col] == 0) {
+			zcount++;
+		}
+		else {
+			ocount++;
+		}
+
+		return;
+	}
+
+	if (check(row, col, len) == true) {
+		if (insert[row][col] == -1) {
+			mcount++;
+		}
+		else if (insert[row][col] == 0) {
+			zcount++;
+		}
+		else {
+			ocount++;
+		}
+
+		return;
+	}
+
+	for (int i = row; i < row + len; i += (len / 3)) {
+		for (int j = col; j < col + len; j += (len / 3)) {
+			func(i, j, len / 3);
+		}
+	}
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%d", &insert[i][j]);
+		}
+	}
+
+	func(0, 0, n);
+
+	printf("%d\n%d\n%d\n", mcount, zcount, ocount);
+
+	return 0;
+}

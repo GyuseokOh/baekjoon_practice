@@ -1,0 +1,74 @@
+#include<stdio.h>
+
+int insert[100][100];
+int n;
+
+bool check(int row, int col, int len) {
+	int cur = insert[row][col];
+
+	for (int i = row; i < row + len; i++) {
+		for (int j = col; j < col + len; j++) {
+			if (insert[i][j] != cur) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+void func(int row, int col, int len) {
+
+	if (len == 1) {
+		if (insert[row][col] == 0) {
+			printf("0");
+		}
+		else {
+			printf("1");
+		}
+
+		return;
+	}
+
+	if (check(row, col, len) == true) {
+		if (insert[row][col] == 0) {
+			printf("0");
+		}
+		else {
+			printf("1");
+		}
+
+		return;
+	}
+
+	printf("(");
+
+	for (int i = row; i < row + len; i += (len / 2)) {
+		for (int j = col; j < col + len; j += (len / 2)) {
+			func(i, j, len / 2);
+		}
+	}
+
+
+	if (len == n) {
+		printf(")\n");
+	}
+	else {
+		printf(")");
+	}
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%1d", &insert[i][j]);
+		}
+	}
+
+	func(0, 0, n);
+
+	return 0;
+}
