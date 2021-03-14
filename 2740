@@ -1,0 +1,45 @@
+#include<stdio.h>
+
+int insert1[110][110];
+int insert2[110][110];
+int result[110][110];
+
+int main(void) {
+
+	int n, m, k;
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			scanf("%d", &insert1[i][j]);
+		}
+	}
+
+	scanf("%d %d", &m, &k);
+
+	for (int i = 0; i < m; i++) {
+		for (int j = 0; j < k; j++) {
+			scanf("%d", &insert2[i][j]);
+		}
+	}
+
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < k; j++) {
+			for (int t = 0; t < m; t++) {
+				result[i][j] += (insert1[i][t] * insert2[t][j]);
+			}
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < k; j++) {
+			printf("%d ", result[i][j]);
+		}
+		printf("\n");
+	}
+
+
+	return 0;
+}

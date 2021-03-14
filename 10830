@@ -1,0 +1,79 @@
+#include<stdio.h>
+
+long long int insert[10][10];
+long long int result[10][10];
+int n;
+
+void func(long long int b) {
+
+	if (b == 1) {
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				result[i][j] = insert[i][j] % 1000;
+			}
+		}
+	}
+	else if (b % 2 == 0) {
+		func(b / 2);
+		long long int res_copy[10][10] = { 0, };
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				res_copy[i][j] = result[i][j] % 1000;
+				result[i][j] = 0;
+			}
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				for (int t = 0; t < n; t++) {
+					result[i][j] += (res_copy[i][t] * res_copy[t][j]) % 1000;
+				}
+			}
+		}
+	}
+	else {
+		func(b - 1);
+		long long int res_copy[10][10] = { 0, };
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				res_copy[i][j] = result[i][j] % 1000;
+				result[i][j] = 0;
+			}
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				for (int t = 0; t < n; t++) {
+					result[i][j] += (insert[i][t] * res_copy[t][j]) % 1000;
+				}
+			}
+		}
+	}
+
+
+}
+
+int main(void) {
+	long long int b;
+
+	scanf("%d %lld", &n, &b);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%lld", &insert[i][j]);
+		}
+	}
+
+	func(b);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			printf("%lld ", result[i][j] % 1000);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
