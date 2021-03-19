@@ -1,0 +1,87 @@
+#include<stdio.h>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+
+using namespace std;
+
+long long int insert[100010];
+long long int n;
+long long int result = 0;
+long long int segment_tree[4000010];
+
+int segment(int node, int start, int end) {
+
+	if (start == end) {
+		segment_tree[node] = start;
+	}
+
+	int mid = (start + end) / 2;
+	int left = segment(node * 2, start, mid);
+	int right = segment(node * 2 + 1, mid + 1, end);
+
+	return segment_tree[node] = insert[left] < insert[right] ? left : right;
+}
+
+int query(int node, int start, int end, int left, int right) {
+	if (end < left || right < start) {
+		return -1;
+	}
+	if (left <= start && end <= right) {
+		return segment_tree[node];
+	}
+
+	int mid = (start + end) / 2;
+
+	int left_node = query(node * 2, start, mid, left, right);
+	int right_node = query(node * 2 + 1, mid + 1, end, left, right);
+
+	if (left_node == -1) {
+		return right_node;
+	}
+	else if (right_node == -1) {
+		return left_node;
+	}
+	else {
+		return insert[left_node] < insert[right_node] ? left_node : right_node;
+	}
+}
+
+
+void solve(long long int left, long long int right) {
+	if (left > right) {
+		return;
+	}
+
+	long long int index = query(1, 0, n - 1, left, right);
+
+	result = (long long int)max(result, insert[index] * (right - left + 1));
+
+	solve(left, index - 1);
+	solve(index + 1, right);
+}
+
+int main(void) {
+
+	while (1) {
+		result = 0;
+
+		scanf("%lld", &n);
+
+		if (n == 0) {
+			break;
+		}
+
+		for (int i = 0; i < n; i++) {
+			scanf("%lld", &insert[i]);
+		}
+
+		segment(1, 0, n - 1);
+
+		solve(0, n - 1);
+
+		printf("%lld\n", result);
+	}
+
+	return 0;
+}
