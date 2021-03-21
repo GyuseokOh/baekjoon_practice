@@ -1,0 +1,92 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+int insert[500010];
+int input[500010];
+int result[500010];
+int n, m;
+
+bool inc(int a, int b) {
+	return a < b;
+}
+
+int lower_bin(int target) {
+
+	int start = 0;
+	int end = n - 1;
+
+	while (start < end) {
+
+		int mid = (start + end) / 2;
+
+		if (insert[mid] >= target) {
+			end = mid;
+		}
+		else {
+			start = mid + 1;
+		}
+	}
+
+	return end;
+}
+
+int upper_bin(int target) {
+
+	int start = 0;
+	int end = n - 1;
+
+	while (start < end) {
+
+		int mid = (start + end) / 2;
+
+		if (insert[mid] > target) {
+			end = mid;
+		}
+		else {
+			start = mid + 1;
+		}
+	}
+
+	return end;
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &insert[i]);
+	}
+
+	sort(insert, insert + n, inc);
+
+	/*for (int i = 0; i < n; i++) {
+		printf("%d ", insert[i]);
+	}
+	printf("\n");*/
+
+	scanf("%d", &m);
+
+	for (int i = 0; i < m; i++) {
+		scanf("%d", &input[i]);
+	}
+
+	for (int i = 0; i < m; i++) {
+		int low = lower_bin(input[i]);
+		int high = upper_bin(input[i]);
+
+		if (high == n - 1 && insert[n - 1] == input[i]) {
+			high++;
+		}
+		result[i] = high - low;
+	}
+
+	for (int i = 0; i < m; i++) {
+		printf("%d ", result[i]);
+	}
+	printf("\n");
+
+	return 0;
+}
