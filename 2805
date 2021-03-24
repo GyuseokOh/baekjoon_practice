@@ -1,0 +1,56 @@
+#include<stdio.h>
+
+int insert[1000000];
+int max = -1;
+int result = 0;
+
+void param(int n, int m) {
+
+	int start = 0;
+	int end = max;
+	int mid;
+
+	while (start <= end) {
+		long long int cur = 0;
+		mid = (start + end) / 2;
+
+		for (int i = 0; i < n; i++) {
+			if (insert[i] >= mid) {
+				cur += (insert[i] - mid);
+			}
+		}
+
+		if (cur >= m) {
+
+			if (mid > result) {
+				result = mid;
+			}
+
+			start = mid + 1;
+		}
+		else {
+			end = mid - 1;
+		}
+	}
+}
+
+int main(void) {
+
+	int n, m;
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &insert[i]);
+
+		if (insert[i] > max) {
+			max = insert[i];
+		}
+	}
+
+	param(n, m);
+
+	printf("%d\n", result);
+
+	return 0;
+}
