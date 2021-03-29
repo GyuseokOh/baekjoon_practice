@@ -1,0 +1,75 @@
+#include<stdio.h>
+
+typedef struct {
+	int key;
+}element;
+
+typedef struct {
+	element heap[200010];
+	int heap_size=0;
+}heap_type;
+
+heap_type heap;
+
+void push(int insert) {
+	int i = ++heap.heap_size;
+
+	while (i != 1 && insert < heap.heap[i / 2].key) {
+		heap.heap[i] = heap.heap[i / 2];
+		i /= 2;
+	}
+
+	heap.heap[i].key = insert;
+}
+
+int pop(void) {
+	int cur = heap.heap[1].key;
+	int parent = 1;
+	int child = 2;
+	int temp = heap.heap[heap.heap_size--].key;
+
+	while(child <= heap.heap_size) {
+		if (child<heap.heap_size&&heap.heap[child].key>heap.heap[child + 1].key) {
+			child++;
+		}
+
+		if (heap.heap[child].key >= temp) {
+			break;
+		}
+
+		heap.heap[parent] = heap.heap[child];
+		parent = child;
+		child*=2;
+	}
+
+	heap.heap[parent].key = temp;
+
+	return cur;
+
+}
+
+int main(void) {
+
+	int n;
+
+	scanf("%d", &n);
+
+	while (n--) {
+		int insert;
+		scanf("%d", &insert);
+
+		if (insert == 0) {
+			if (heap.heap_size == 0) {
+				printf("0\n");
+			}
+			else {
+				printf("%d\n", pop());
+			}
+		}
+		else {
+			push(insert);
+		}
+	}
+
+	return 0;
+}
