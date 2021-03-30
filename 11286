@@ -1,0 +1,95 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct {
+	int key;
+}element;
+
+typedef struct {
+	element heap[200010];
+	int heap_size;
+}heap_type;
+
+heap_type heap;
+
+bool comp(int a, int b) {
+	int a_abs = abs(a);
+	int b_abs = abs(b);
+
+	if (a_abs <= b_abs) {
+		if (a_abs == b_abs) {
+			if (a < b) {
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+void push(int insert) {
+	int i = ++heap.heap_size;
+
+	while (i != 1 && comp(insert,heap.heap[i/2].key)==true) {
+		heap.heap[i] = heap.heap[i / 2];
+		i /= 2;
+	}
+
+	heap.heap[i].key = insert;
+}
+
+int pop(void) {
+
+	int parent = 1;
+	int child = 2;
+	int target = heap.heap[1].key;
+	int temp = heap.heap[heap.heap_size--].key;
+
+	while (child <= heap.heap_size) {
+		if (child<heap.heap_size&&comp(heap.heap[child+1].key, heap.heap[child].key)==true) {
+			child++;
+		}
+
+		if (comp(temp,heap.heap[child].key)==true) {
+			break;
+		}
+
+		heap.heap[parent] = heap.heap[child];
+		parent = child;
+		child *= 2;
+	}
+
+	heap.heap[parent].key = temp;
+
+	return target;
+}
+
+int main(void) {
+
+	int n;
+
+	scanf("%d", &n);
+
+	while (n--) {
+		int insert;
+
+		scanf("%d", &insert);
+
+		if (insert == 0) {
+			if (heap.heap_size == 0) {
+				printf("0\n");
+			}
+			else {
+				printf("%d\n", pop());
+			}
+		}
+		else {
+
+			push(insert);
+
+		}
+	}
+
+	return 0;
+}
