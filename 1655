@@ -1,0 +1,117 @@
+#include<stdio.h>
+
+typedef struct {
+	int key;
+}element;
+
+typedef struct {
+	element heap[200010];
+	int size = 0;
+}heap_type;
+
+heap_type max_heap;
+heap_type min_heap;
+
+void push_max(int insert) {
+	int i = ++max_heap.size;
+
+	while (i != 1 && insert > max_heap.heap[i / 2].key) {
+		max_heap.heap[i] = max_heap.heap[i / 2];
+		i /= 2;
+	}
+
+	max_heap.heap[i].key = insert;
+}
+
+void push_min(int insert) {
+	int i = ++min_heap.size;
+
+	while (i != 1 && insert < min_heap.heap[i / 2].key) {
+		min_heap.heap[i] = min_heap.heap[i / 2];
+		i /= 2;
+	}
+
+	min_heap.heap[i].key = insert;
+}
+
+int pop_max(void) {
+	int parent = 1;
+	int child = 2;
+	int target = max_heap.heap[1].key;
+	int temp = max_heap.heap[max_heap.size--].key;
+
+	while (child <= max_heap.size) {
+		if (child < max_heap.size&&max_heap.heap[child].key < max_heap.heap[child + 1].key) {
+			child++;
+		}
+
+		if (temp >= max_heap.heap[child].key) {
+			break;
+		}
+
+		max_heap.heap[parent] = max_heap.heap[child];
+		parent = child;
+		child *= 2;
+	}
+
+	max_heap.heap[parent].key = temp;
+
+	return target;
+}
+
+int pop_min(void) {
+	int parent = 1;
+	int child = 2;
+	int target = min_heap.heap[1].key;
+	int temp = min_heap.heap[min_heap.size--].key;
+
+	while (child <= min_heap.size) {
+		if (child < min_heap.size&&min_heap.heap[child].key > min_heap.heap[child + 1].key) {
+			child++;
+		}
+
+		if (temp <= min_heap.heap[child].key) {
+			break;
+		}
+
+		min_heap.heap[parent] = min_heap.heap[child];
+		parent = child;
+		child *= 2;
+	}
+
+	min_heap.heap[parent].key = temp;
+
+	return target;
+}
+
+int main(void) {
+
+	int n;
+
+	scanf("%d", &n);
+
+	while (n--) {
+
+		int insert;
+
+		scanf("%d", &insert);
+
+		if (max_heap.size == min_heap.size) {
+			push_max(insert);
+		}
+		else {
+			push_min(insert);
+		}
+
+		if (min_heap.size!=0&&max_heap.heap[1].key > min_heap.heap[1].key) {
+			int min = pop_min();
+			int max = pop_max();
+			push_max(min);
+			push_min(max);
+		}
+
+		printf("%d\n", max_heap.heap[1]);
+	}
+
+	return 0;
+}
