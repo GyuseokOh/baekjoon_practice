@@ -1,0 +1,40 @@
+#include<stdio.h>
+#include<string.h>
+
+int main(void) {
+
+	int n;
+	int len;
+	char insert[55][55];
+	bool check[55] = { false, };
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%s", insert[i]);
+	}
+
+	len = strlen(insert[0]);
+
+	for (int i = 0; i < len; i++) {
+		char cur = insert[0][i];
+		for (int j = 1; j < n; j++) {
+			if (insert[j][i] != cur) {
+				check[i] = true;
+				break;
+			}
+		}
+	}
+
+	for (int i = 0; i < len; i++) {
+		if (check[i] == true) {
+			printf("?");
+		}
+		else {
+			printf("%c", insert[0][i]);
+		}
+	}
+	printf("\n");
+
+	return 0;
+}
