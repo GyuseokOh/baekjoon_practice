@@ -1,0 +1,58 @@
+#include<stdio.h>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+
+typedef struct{
+	int first;
+	int last;
+}input;
+
+vector<input>insert;
+
+int n;
+int m;
+bool check[110] = { false, };
+int result = 0;
+
+bool inc(input a, input b) {
+	if (a.first == b.first) {
+		return a.last < b.last;
+	}
+	return a.first < b.first;
+}
+
+void dfs(int cur) {
+	check[cur] = true;
+	result++;
+
+	for (int i = 0; i < insert.size(); i++) {
+		if (insert[i].first == cur && check[insert[i].last] == false) {
+			dfs(insert[i].last);
+		}
+	}
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+	scanf("%d", &m);
+
+	for (int i = 0; i < m; i++) {
+		int insert1, insert2;
+
+		scanf("%d %d", &insert1, &insert2);
+
+		insert.push_back({ insert1,insert2 });
+		insert.push_back({ insert2,insert1 });
+	}
+
+	sort(insert.begin(), insert.end(), inc);
+
+	dfs(1);
+
+	printf("%d\n", result - 1);
+
+	return 0;
+}
