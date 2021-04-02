@@ -1,0 +1,60 @@
+#include<stdio.h>
+
+int m, n, k;
+int insert[55][55];
+int x_dir[4] = { 1,-1,0,0 };
+int y_dir[4] = { 0,0,1,-1 };
+
+void dfs(int row, int col, int count) {
+	insert[row][col] = count;
+
+	for (int i = 0; i < 4; i++) {
+		int cur_x = row + x_dir[i];
+		int cur_y = col + y_dir[i];
+
+		if (insert[cur_x][cur_y] == 1) {
+			dfs(cur_x, cur_y, count);
+		}
+	}
+}
+
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		int count = 2;
+		int row, col;
+
+		scanf("%d %d %d", &m, &n, &k);
+
+		for (int i = 0; i < k; i++) {
+			scanf("%d %d", &col,&row);
+			insert[row][col] = 1;
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (insert[i][j] == 1) {
+					dfs(i, j, count);
+					count++;
+				}
+			}
+		}
+
+		printf("%d\n", count - 2);
+
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				insert[i][j] = 0;
+			}
+		}
+	}
+
+
+
+	return 0;
+}
