@@ -1,0 +1,60 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+int insert[30][30];
+int result[1000];
+int x_dir[4] = { 1,-1,0,0 };
+int y_dir[4] = { 0, 0, -1, 1 };
+int n;
+
+bool inc(int a, int b) {
+	return a < b;
+}
+
+void dfs(int row, int col, int count) {
+	insert[row][col] = count;
+	result[count]++;
+
+	for (int i = 0; i < 4; i++) {
+		int cur_x = row + x_dir[i];
+		int cur_y = col + y_dir[i];
+
+		if (insert[cur_x][cur_y] == 1) {
+			dfs(cur_x, cur_y, count);
+		}
+	}
+}
+
+int main(void) {
+
+	int count = 2;
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%1d", &insert[i][j]);
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (insert[i][j] == 1) {
+				dfs(i, j, count);
+				count++;
+			}
+		}
+	}
+
+	sort(result + 2, result + count, inc);
+
+	printf("%d\n", count - 2);
+
+	for (int i = 2; i < count; i++) {
+		printf("%d\n", result[i]);
+	}
+
+	return 0;
+}
