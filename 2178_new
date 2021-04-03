@@ -1,0 +1,56 @@
+#include<stdio.h>
+#include<queue>
+
+using namespace std;
+
+typedef struct {
+	int x;
+	int y;
+}input;
+
+int x_dir[4] = { 1,-1,0,0 };
+int y_dir[4] = { 0,0,1,-1 };
+
+int insert[110][110];
+int check[110][110];
+
+int main(void) {
+	int n, m;
+	queue<input> q;
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			scanf("%1d", &insert[i][j]);
+		}
+	}
+
+	q.push({ 0,0 });
+	check[0][0] = 1;
+
+	while (q.empty() != true) {
+		int x = q.front().x;
+		int y = q.front().y;
+
+		if (x == n-1 && y == m-1) {
+			break;
+		}
+		q.pop();
+
+		for (int i = 0; i < 4; i++) {
+			int cur_x = x + x_dir[i];
+			int cur_y = y + y_dir[i];
+
+			if (insert[cur_x][cur_y] == 1 && check[cur_x][cur_y] == false) {
+				q.push({ cur_x,cur_y });
+				check[cur_x][cur_y] = check[x][y] + 1;
+			}
+		}
+	}
+
+	printf("%d\n", check[n - 1][m - 1]);
+
+	return 0;
+}
+
