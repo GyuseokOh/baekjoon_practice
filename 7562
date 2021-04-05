@@ -1,0 +1,92 @@
+#include<stdio.h>
+#include<queue>
+
+using namespace std;
+
+typedef struct {
+	int x;
+	int y;
+}input;
+
+queue<input> q;
+int n;
+int result[310][310];
+input start;
+input dest;
+
+int bfs(void) {
+
+	while (q.empty() != true) {
+
+		int x = q.front().x;
+		int y = q.front().y;
+		q.pop();
+
+		if (x == dest.x&&y == dest.y) {
+			while (!q.empty()) {
+				q.pop();
+			}
+			return result[dest.x][dest.y] - 1;
+		}
+
+		if (x - 1 >= 0 && y - 2 >= 0 && result[x - 1][y - 2] == 0) {
+			result[x - 1][y - 2] = result[x][y] + 1;
+			q.push({ x - 1,y - 2 });
+		}
+		if (x + 1 < n && y - 2 >= 0 && result[x + 1][y - 2] == 0) {
+			result[x + 1][y - 2] = result[x][y] + 1;
+			q.push({ x + 1,y - 2 });
+		}
+		if (x - 2 >= 0 && y - 1 >= 0 && result[x - 2][y - 1] == 0) {
+			result[x - 2][y - 1] = result[x][y] + 1;
+			q.push({ x - 2,y - 1 });
+		}
+		if (x + 2 < n && y - 1 >= 0 && result[x + 2][y - 1] == 0) {
+			result[x + 2][y - 1] = result[x][y] + 1;
+			q.push({ x + 2,y - 1 });
+		}
+		if (x - 2 >= 0 && y + 1 < n && result[x - 2][y + 1] == 0) {
+			result[x - 2][y + 1] = result[x][y] + 1;
+			q.push({ x - 2,y + 1 });
+		}
+		if (x + 2 < n && y + 1 < n && result[x + 2][y + 1] == 0) {
+			result[x + 2][y + 1] = result[x][y] + 1;
+			q.push({ x + 2,y + 1 });
+		}
+		if (x - 1 >= 0 && y + 2 < n && result[x - 1][y + 2] == 0) {
+			result[x - 1][y + 2] = result[x][y] + 1;
+			q.push({ x - 1,y + 2 });
+		}
+		if (x + 1 < n && y + 2 < n && result[x + 1][y + 2] == 0) {
+			result[x + 1][y + 2] = result[x][y] + 1;
+			q.push({ x + 1,y + 2 });
+		}
+	}
+	return 0;
+}
+
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		scanf("%d", &n);
+		scanf("%d %d", &start.x, &start.y);
+		scanf("%d %d", &dest.x, &dest.y);
+
+		q.push({ start.x,start.y });
+		result[start.x][start.y] = 1;
+
+		printf("%d\n", bfs());
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				result[i][j] = 0;
+			}
+		}
+	}
+
+	return 0;
+}
