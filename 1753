@@ -1,0 +1,75 @@
+#include<stdio.h>
+#include<vector>
+#include<queue>
+#include<algorithm>
+
+using namespace std;
+
+typedef struct {
+	int to;
+	int weight;
+}input;
+
+typedef struct {
+	int weight;
+	int cur;
+}result_type;
+
+#define INF 1000000
+
+int dist[20010];
+int v, e, k;
+
+vector<input> insert[20010];
+priority_queue<result_type> pq;
+
+void dijk(int start) {
+	dist[start] = 0;
+	pq.push({ 0,start });
+
+	while (pq.empty() != true) {
+		int cur = pq.top().cur;
+		int weight = -pq.top().weight;
+		pq.pop();
+
+		for (int i = 0; i < insert[cur].size(); i++) {
+			int next_node = insert[cur][i].to;
+			int next_weight = insert[cur][i].weight;
+
+			dist[next_node] = min(dist[next_node], dist[cur] + next_weight);
+
+			pq.push({ -next_weight,next_node });
+		}
+	}
+}
+
+int main(void) {
+
+	scanf("%d %d", &v, &e);
+
+	for (int i = 1; i <= v; i++) {
+		dist[i] = INF;
+	}
+
+	scanf("%d", &k);
+
+	for (int i = 0; i < e; i++) {
+		int start, to, weight;
+
+		scanf("%d %d %d", &start, &to, &weight);
+		insert[start].push_back({ to, weight });
+	}
+
+	dijk(k);
+
+	for (int i = 1; i <= v; i++) {
+		if (dist[i] == INF) {
+			printf("INF\n");
+		}
+		else {
+			printf("%d\n", dist[i]);
+		}
+	}
+
+	return 0;
+}
