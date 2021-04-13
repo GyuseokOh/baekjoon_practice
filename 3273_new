@@ -1,0 +1,57 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+int n,x;
+int insert[100010];
+
+int binary(int target, int start, int end) {
+
+	int s = start;
+	int e = end;
+
+	while (s <= e) {
+		int mid = (s + e) / 2;
+
+		if (insert[mid] == target) {
+			return true;
+		}
+		else if (insert[mid] < target) {
+			start = mid + 1;
+		}
+		else {
+			end = mid - 1;
+		}
+	}
+
+	return false;
+}
+
+int two(void) {
+	int count = 0;
+
+	for (int i = 0; i < n; i++) {
+		int target = x - insert[i];
+		if (binary(target, i + 1, n) == true) {
+			count++;
+		}
+	}
+
+	return count;
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &insert[i]);
+	}
+
+	scanf("%d", &x);
+
+	printf("%d\n", two());
+
+	return 0;
+}
