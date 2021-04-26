@@ -1,0 +1,58 @@
+#include<stdio.h>
+#include<math.h>
+
+int n;
+int primes[300000];
+int prime_len = 0;
+bool prime_check[4000000];
+
+void find_prime(void) {
+	for (int i = 2; i <= sqrt(n); i++) {
+		int count = 2;
+		while (count*i <= n) {
+			if (prime_check[count*i] == false) {
+				prime_check[count*i] = true;
+			}
+			count++;
+		}
+	}
+
+	for (int i = 2; i <= n; i++) {
+		if (prime_check[i] == false) {
+			primes[prime_len++] = i;
+		}
+	}
+}
+
+int find(void) {
+	int start = 0;
+	int end = 0;
+	long long int add = primes[start];
+	int count = 0;
+
+	while (start <= end&&end < prime_len) {
+		if (add == n) {
+			count++;
+			add += primes[++end];
+		}
+		else if (add < n) {
+			add += primes[++end];
+		}
+		else {
+			add -= primes[start++];
+		}
+	}
+
+	return count;
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	find_prime();
+
+	printf("%d\n", find());
+
+	return 0;
+}
