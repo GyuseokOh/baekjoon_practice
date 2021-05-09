@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <algorithm>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+typedef struct {
+	int price;
+	int day;
+}result;
+
+bool inc(result a, result b) {
+	return a.day < b.day;
+}
+
+vector<int> solution(string code, string day, vector<string> data) {
+	vector<int> answer;
+	vector<result> r;
+
+	for (int i = 0; i < data.size(); i++) {
+		bool code_check = true;
+		bool day_check = true;
+		string cur = data[i];
+		for (int j = 0; j < cur.size(); j++) {
+			for (int t = 15; t < 21; t++) {
+				if (cur[t] != code[t - 15]) {
+					code_check = false;
+					break;
+				}
+			}
+			for (int t = 27; t < 35; t++) {
+				if (cur[t] != day[t - 15]) {
+					day_check = false;
+					break;
+				}
+			}
+			if (code_check == true && day_check == true) {
+				char price[10];
+				char time[10];
+
+				strncpy(price, cur[15], 6);
+				strncpy(time, cur[35], 2);
+
+				r.push_back({ atoi(price),atoi(day) });
+			}
+		}
+	}
+	return answer;
+}
