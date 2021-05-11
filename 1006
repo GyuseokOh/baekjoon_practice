@@ -1,0 +1,29 @@
+#include<stdio.h>
+
+int main(void){
+    
+    int N,insert[100][100],x=0,y=0,count=0;
+    
+    scanf("%d",&N);
+    
+    for(int i=0;i<N;i++)
+        for(int j=0;j<N;j++)
+            scanf("%d",&insert[i][j]);
+    
+    while(x!=N&&y!=N){
+        if(insert[x+1][y]==1&&x<N){
+            x++;
+            count++;
+        }
+        else if(insert[x][y+1]==1&&y<N){
+            y++;
+            count++;
+        }
+        else if(y<N&&x<N)
+            y++;
+    }
+    
+    printf("%d\n",count);
+    
+    return 0;
+}
