@@ -1,0 +1,99 @@
+#include<stdio.h>
+#include<vector>
+#include<queue>
+
+using namespace std;
+
+typedef struct {
+	int child;
+	int weight;
+}input;
+
+typedef struct {
+	int node;
+	int len;
+}qinput;
+
+vector<input>insert[10010];
+int n;
+int max_node;
+int max_len = -1;
+bool check1[10010];
+bool check2[10010];
+
+void find(void) {
+
+	queue<qinput>q;
+
+	q.push({1,0});
+	check1[1] = true;
+
+	while (q.empty() != true) {
+		int cnode = q.front().node;
+		int clen = q.front().len;
+		q.pop();
+
+		for (int i = 0; i < insert[cnode].size(); i++) {
+			int next = insert[cnode][i].child;
+			int nweight = insert[cnode][i].weight;
+
+			if (check1[next] == false) {
+				check1[next] = true;
+				if (clen + nweight > max_len) {
+					max_len = clen + nweight;
+					max_node = next;
+				}
+
+				q.push({ next, clen + nweight });
+			}
+		}
+	}
+
+	max_len = -1;
+	q.push({max_node,0});
+	check2[max_node] = true;
+
+	while (q.empty() != true) {
+		int cnode = q.front().node;
+		int clen = q.front().len;
+		q.pop();
+
+		for (int i = 0; i < insert[cnode].size(); i++) {
+			int next = insert[cnode][i].child;
+			int nweight = insert[cnode][i].weight;
+
+			if (check2[next] == false) {
+				check2[next] = true;
+				if (clen + nweight > max_len) {
+					max_len = clen + nweight;
+					max_node = next;
+				}
+
+				q.push({ next, clen + nweight });
+			}
+		}
+	}
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	if (n == 1) {
+		max_len = 0;
+	}
+	else {
+		for (int i = 0; i < n - 1; i++) {
+			int parent, child, weight;
+			scanf("%d %d %d", &parent, &child, &weight);
+			insert[parent].push_back({ child,weight });
+			insert[child].push_back({ parent,weight });
+		}
+
+		find();
+	}
+
+	printf("%d\n", max_len);
+
+	return 0;
+}
