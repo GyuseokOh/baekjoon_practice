@@ -1,0 +1,82 @@
+#include<stdio.h>
+#include<string.h>
+#include<vector>
+
+using namespace std;
+
+typedef struct {
+	char node;
+	char left;
+	char right;
+}input;
+
+int n;
+vector<input>insert;
+
+void predfs(char cur) {
+	if (cur == '.') {
+		return;
+	}
+
+	printf("%c", cur);
+	for (int i = 0; i < insert.size(); i++) {
+		if (insert[i].node == cur) {
+			predfs(insert[i].left);
+			predfs(insert[i].right);
+		}
+	}
+}
+
+void inorderdfs(char cur) {
+	if (cur == '.') {
+		return;
+	}
+	for (int i = 0; i < insert.size(); i++) {
+		if (insert[i].node == cur) {
+			inorderdfs(insert[i].left);
+			printf("%c", cur);
+			inorderdfs(insert[i].right);
+		}
+	}
+}
+
+void postorderdfs(char cur) {
+	if (cur == '.') {
+		return;
+	}
+
+	for (int i = 0; i < insert.size(); i++) {
+		if (insert[i].node == cur) {
+			postorderdfs(insert[i].left);
+			postorderdfs(insert[i].right);
+			printf("%c", cur);
+		}
+	}
+
+}
+
+int main(void) {
+
+	char start = 'A';
+	char save[3];
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < 3*n; i++) {
+		char a[10];
+		scanf("%s", a);
+		save[i % 3] = a[0];
+
+		if (i % 3 == 2) {
+			insert.push_back({ save[0],save[1],save[2] });
+		}
+	}
+
+	predfs(start);
+	printf("\n");
+	inorderdfs(start);
+	printf("\n");
+	postorderdfs(start);
+
+	return 0;
+}
