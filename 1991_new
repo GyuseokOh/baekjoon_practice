@@ -1,0 +1,83 @@
+#include<stdio.h>
+#include<vector>
+
+using namespace std;
+
+typedef struct {
+	char node;
+	char left;
+	char right;
+}input;
+
+vector<input> tree;
+
+void preorder(char cur) {
+	if (cur == '.') {
+		return;
+	}
+
+	printf("%c", cur);
+
+	for (int i = 0; i < tree.size(); i++) {
+		if (tree[i].node == cur) {
+			preorder(tree[i].left);
+			preorder(tree[i].right);
+		}
+	}
+}
+
+void inorder(char cur) {
+	if (cur == '.') {
+		return;
+	}
+
+	for (int i = 0; i < tree.size(); i++) {
+		if (tree[i].node == cur) {
+			inorder(tree[i].left);
+			printf("%c", cur);
+			inorder(tree[i].right);
+		}
+	}
+}
+
+void postorder(char cur) {
+	if (cur == '.') {
+		return;
+	}
+
+	for (int i = 0; i < tree.size(); i++) {
+		if (tree[i].node == cur) {
+			postorder(tree[i].left);
+			postorder(tree[i].right);
+			printf("%c", cur);
+		}
+	}
+}
+
+int main(void) {
+
+	int n;
+	int inputcount = 0;
+	char insert_save[3];
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n*3; i++) {
+		char insert[100];
+		scanf("%s", insert);
+		insert_save[inputcount++] = insert[0];
+		if (inputcount == 3) {
+			inputcount = 0;
+			tree.push_back({ insert_save[0],insert_save[1],insert_save[2] });
+		}
+	}
+
+	preorder('A');
+	printf("\n");
+	inorder('A');
+	printf("\n");
+	postorder('A');
+	printf("\n");
+
+	return 0;
+}
