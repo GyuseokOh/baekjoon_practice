@@ -1,0 +1,29 @@
+ int memo[1010][110];
+ 
+ int dfs(int total,int k){
+     int count=0;
+     if(total<k){
+         k=total;
+     }
+     if(memo[total][k]!=0){
+         return memo[total][k];
+     }
+     if(total==0){
+         return memo[total][k]=1;
+     }
+     
+     for(int i=1;i<=k;i++){
+         count+=dfs(total-i,i);
+         count%=1000000007;
+     }
+     
+     return memo[total][k]=count;
+ }
+ 
+int ways(int total,int k){
+    int result=0;
+    
+    result=dfs(total,k);
+    
+    return result;
+}
