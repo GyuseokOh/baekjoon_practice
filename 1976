@@ -1,0 +1,71 @@
+#include<stdio.h>
+#include<vector>
+
+using namespace std;
+
+int parent[210];
+int trip[1010];
+int n, m;
+
+int find(int cur) {
+	if (cur == parent[cur]) {
+		return cur;
+	}
+
+	return parent[cur] = find(parent[cur]);
+}
+
+void uni(int a, int b) {
+	a = find(a);
+	b = find(b);
+
+	if (a < b) {
+		parent[b] = a;
+	}
+	else {
+		parent[a] = b;
+	}
+}
+
+int main(void) {
+	bool flag = true;
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 1; i <= n; i++) {
+		parent[i] = i;
+	}
+
+	for (int i = 1; i <= n; i++) {
+		int insert;
+		for (int j = 1; j <= n; j++) {
+			scanf("%d", &insert);
+			if (insert == 1) {
+				uni(i, j);
+			}
+		}
+	}
+
+	for (int i = 0; i < m; i++) {
+		scanf("%d", &trip[i]);
+	}
+
+	for (int i = 0; i < m - 1; i++) {
+		int a_parent = find(trip[i]);
+		int b_parent = find(trip[i + 1]);
+
+		if (a_parent != b_parent) {
+			flag = false;
+			break;
+		}
+	}
+
+	if (flag == true) {
+		printf("YES\n");
+	}
+	else {
+		printf("NO\n");
+	}
+
+	return 0;
+}
