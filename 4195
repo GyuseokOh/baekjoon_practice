@@ -1,0 +1,117 @@
+#include<stdio.h>
+#include<string.h>
+
+typedef struct {
+	char name[30];
+	char parent[30];
+	int height;
+}input;
+
+
+input parent[100010];
+int count = 0;
+
+char* find(char* cur) {
+	int cur_parent;
+	for (int i = 0; i < count; i++) {
+		if (strcmp(parent[i].name, cur) == 0) {
+			cur_parent = i;
+			break;
+		}
+	}
+
+	if (strcmp(parent[cur_parent].name, parent[cur_parent].parent) == 0) {
+		return parent[cur_parent].name;
+	}
+
+	strcpy(parent[cur_parent].parent, find(parent[cur_parent].parent));
+	return parent[cur_parent].parent;
+}
+
+int uni(char* a, char* b) {
+	char* a_parent = find(a);
+	char* b_parent = find(b);
+	int result;
+
+	if (strcmp(a_parent, b_parent) < 0) {
+		for (int i = 0; i < count; i++) {
+			if (strcmp(b_parent, parent[i].name) == 0) {
+				strcpy(parent[i].parent, a_parent);
+				for (int j = 0; j < count; j++) {
+					if (strcmp(a_parent, parent[j].name) == 0) {
+						parent[j].height += parent[i].height;
+						result = parent[j].height;
+						break;
+					}
+				}
+				break;
+			}
+		}
+	}
+	else {
+		for (int i = 0; i < count; i++) {
+			if (strcmp(a_parent, parent[i].name) == 0) {
+				strcpy(parent[i].parent, b_parent);
+				for (int j = 0; j < count; j++) {
+					if (strcmp(b_parent, parent[j].name) == 0) {
+						parent[j].height += parent[i].height;
+						result = parent[j].height;
+						break;
+					}
+				}
+				break;
+			}
+		}
+	}
+
+	return result;
+}
+
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		int n;
+		count = 0;
+
+		scanf("%d", &n);
+
+		for (int i = 0; i < n; i++) {
+			bool flag1 = false;
+			bool flag2 = false;
+			char name1[30];
+			char name2[30];
+
+			scanf("%s", name1);
+			scanf("%s", name2);
+
+			for (int j = 0; j < count; j++) {
+				if (strcmp(parent[j].name, name1) == 0) {
+					flag1 = true;
+				}
+				if (strcmp(parent[j].name, name2) == 0) {
+					flag2 = true;
+				}
+			}
+
+			if (flag1 == false) {
+				strcpy(parent[count].name, name1);
+				parent[count].height = 1;
+				strcpy(parent[count++].parent, name1);
+			}
+			if (flag2 == false) {
+				strcpy(parent[count].name, name2);
+				parent[count].height = 1;
+				strcpy(parent[count++].parent, name2);
+			}
+
+			printf("%d\n",uni(name1, name2));
+
+		}
+	}
+
+	return 0;
+}
