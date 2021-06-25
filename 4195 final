@@ -1,0 +1,72 @@
+#include<stdio.h>
+#include<map>
+#include<string>
+#include<algorithm>
+
+using namespace std;
+
+int parent[200010];
+int height[200010];
+int pcount;
+
+int find(int cur) {
+	if (parent[cur] == cur) {
+		return cur;
+	}
+
+	return parent[cur] = find(parent[cur]);
+}
+
+void uni(int a, int b) {
+	a = find(a);
+	b = find(b);
+
+	if (parent[b] != a) {
+		parent[b] = a;
+		height[b] += height[a];
+		height[a] = height[b];
+	}
+}
+
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		int n;
+		pcount = 1;
+		map<string, int> m;
+		m.clear();
+
+		scanf("%d", &n);
+
+		for (int i = 0; i < n; i++) {
+			char name1[25];
+			char name2[25];
+
+			scanf("%s %s", name1, name2);
+
+			if (m.find(name1) == m.end()) {
+				m.insert(pair<string, int>(name1, pcount));
+				parent[pcount] = pcount;
+				height[pcount] = 1;
+				pcount++;
+			}
+
+			if (m.find(name2) == m.end()) {
+				m.insert(pair<string, int>(name2, pcount));
+				parent[pcount] = pcount;
+				height[pcount] = 1;
+				pcount++;
+			}
+
+			uni(m.find(name1)->second, m.find(name2)->second);
+			int result = find(m.find(name1)->second);
+			printf("%d\n", height[result]);
+		}
+	}
+
+	return 0;
+}
