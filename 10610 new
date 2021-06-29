@@ -1,0 +1,43 @@
+#include<stdio.h>
+#include<string.h>
+#include<algorithm>
+
+using namespace std;
+
+bool dec(char a, char b) {
+	return a > b;
+}
+
+int main(void) {
+
+	char insert[100010];
+	int len;
+	int all = 0;
+	bool zero_check = false;
+	bool all_check = true;
+
+	scanf("%s", insert);
+
+	len = strlen(insert);
+
+	for (int i = 0; i < len; i++) {
+		all += insert[i] - '0';
+		if (insert[i] == '0') {
+			zero_check = true;
+		}
+	}
+
+	if (all % 3 != 0) {
+		all_check = false;
+	}
+
+	if (all_check == true && zero_check == true) {
+		sort(insert, insert + len, dec);
+		printf("%s\n", insert);
+	}
+	else {
+		printf("-1\n");
+	}
+
+	return 0;
+}
