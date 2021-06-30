@@ -1,0 +1,51 @@
+#include<stdio.h>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+
+typedef struct {
+	int score1;
+	int score2;
+}input;
+
+bool inc(input a, input b) {
+	return a.score1 < b.score1;
+}
+
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		vector<input> v;
+
+		int n;
+		int count = 1;
+		int pivot = 0;
+
+		scanf("%d", &n);
+
+		for (int i = 0; i < n; i++) {
+			int score1, score2;
+			scanf("%d %d", &score1, &score2);
+
+			v.push_back({ score1,score2 });
+		}
+
+		sort(v.begin(), v.end(), inc);
+
+		for (int i = 1; i < n; i++) {
+			if (v[i].score2 < v[pivot].score2) {
+				count++;
+				pivot = i;
+			}
+		}
+
+		printf("%d\n", count);
+	}
+
+	return 0;
+}
