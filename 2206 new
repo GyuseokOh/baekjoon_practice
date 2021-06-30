@@ -1,0 +1,70 @@
+#include<stdio.h>
+#include<queue>
+
+using namespace std;
+
+typedef struct {
+	int x;
+	int y;
+	int from;
+}input;
+
+int n, m;
+int map[1010][1010];
+int result[1010][1010][2];
+int xdir[4] = { -1,1,0,0 };
+int ydir[4] = { 0,0,-1,1 };
+
+int bfs(void) {
+
+	queue<input> q;
+
+	result[0][0][0] = 1;
+	q.push({ 0,0,0 });
+
+	while (q.empty() != true) {
+		int curx = q.front().x;
+		int cury = q.front().y;
+		int curfrom = q.front().from;
+		q.pop();
+
+		if (curx == n - 1 && cury == m - 1) {
+			return result[curx][cury][curfrom];
+		}
+
+		for (int i = 0; i < 4; i++) {
+			int newx = curx + xdir[i];
+			int newy = cury + ydir[i];
+
+			if (newx >= 0 && newy >= 0 && newx < n&&newy < m) {
+				if (map[newx][newy] == 0 && result[newx][newy][curfrom] == 0) {
+					result[newx][newy][curfrom] = result[curx][cury][curfrom] + 1;
+					q.push({ newx,newy,curfrom });
+				}
+				else {
+					if (curfrom == 0) {
+						result[newx][newy][curfrom + 1] = result[curx][cury][curfrom] + 1;
+						q.push({ newx,newy,curfrom + 1 });
+					}
+				}
+			}
+		}
+	}
+
+	return -1;
+}
+
+int main(void) {
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			scanf("%1d", &map[i][j]);
+		}
+	}
+
+	printf("%d\n", bfs());
+
+	return 0;
+}
