@@ -1,0 +1,80 @@
+#include<stdio.h>
+#include<queue>
+
+using namespace std;
+
+typedef struct {
+	int x;
+	int y;
+	int day;
+}input;
+
+int map[1010][1010];
+int result[1010][1010];
+int n, m;
+int zero_count = 0;
+int xdir[4] = { -1,1,0,0 };
+int ydir[4] = { 0,0,-1,1 };
+queue<input> q;
+
+int bfs(void) {
+
+	if (zero_count == 0) {
+		return 0;
+	}
+
+	while (q.empty() != true) {
+		int curx = q.front().x;
+		int cury = q.front().y;
+		int curday = q.front().day;
+		q.pop();
+
+		if (zero_count == 0) {
+			int max = -1;
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < m; j++) {
+					if (result[i][j] > max) {
+						max = result[i][j];
+					}
+				}
+			}
+
+			return max;
+		}
+
+		for (int i = 0; i < 4; i++) {
+			int newx = curx + xdir[i];
+			int newy = cury + ydir[i];
+
+			if (map[newx][newy] == 0 && result[newx][newy] == 0 && newx >= 0 && newy >= 0 && newx < n&&newy < m) {
+				map[newx][newy] = 1;
+				result[newx][newy] = curday + 1;
+				q.push({ newx,newy,curday + 1 });
+				zero_count--;
+			}
+		}
+	}
+
+	return -1;
+}
+
+int main(void) {
+
+	scanf("%d %d", &m, &n);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			scanf("%d", &map[i][j]);
+			if (map[i][j] == 1) {
+				q.push({ i,j,0 });
+			}
+			else if(map[i][j]==0) {
+				zero_count++;
+			}
+		}
+	}
+
+	printf("%d\n", bfs());
+
+	return 0;
+}
