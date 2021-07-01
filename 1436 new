@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<limits.h>
+
+int main(void) {
+
+	int n;
+	int count = 0;
+	int start = 666;
+
+	scanf("%d", &n);
+
+	while (1) {
+		int save[100000];
+		int cp = start;
+		int len = 0;
+
+		while (cp != 0) {
+			save[len++] = cp % 10;
+			cp /= 10;
+		}
+
+		for (int i = 0; i < len; i++) {
+			if (save[i] == 6) {
+				if (i + 1 < len&&i + 2 < len&&save[i + 1] == 6 && save[i + 2] == 6) {
+					count++;
+					break;
+				}
+			}
+		}
+		if (count == n) {
+			printf("%d\n", start);
+			break;
+		}
+		start++;
+	}
+
+	return 0;
+}
