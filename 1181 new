@@ -1,0 +1,51 @@
+#include<stdio.h>
+#include<string.h>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+
+typedef struct {
+	int len;
+	char insert[55];
+}word;
+
+word insert[20010];
+
+bool inc(word a, word b) {
+	if (a.len == b.len) {
+		int result = strcmp(a.insert, b.insert);
+		if (result < 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	return a.len < b.len;
+}
+
+int main(void) {
+	int n;
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%s", insert[i].insert);
+		insert[i].len = strlen(insert[i].insert);
+	}
+
+	sort(insert, insert + n, inc);
+
+	for (int i = 0; i < n; i++) {
+		if (i + 1 < n && strcmp(insert[i].insert, insert[i + 1].insert) == 0) {
+			continue;
+		}
+		else {
+
+			printf("%s\n", insert[i].insert);
+		}
+	}
+
+	return 0;
+}
