@@ -1,0 +1,47 @@
+#include<stdio.h>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+
+typedef struct{
+	int a;
+	int b;
+}input;
+
+vector<input> v;
+int result[110];
+int n;
+int fin = -1;
+
+bool inc(input a, input b) {
+	return a.a < b.a;
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		int a, b;
+
+		scanf("%d %d", &a, &b);
+		v.push_back({ a,b });
+	}
+
+	sort(v.begin(), v.end(), inc);
+
+	for (int i = 0; i < n; i++) {
+		result[i] = 1;
+		for (int j = 0; j < i; j++) {
+			if (v[j].b < v[i].b) {
+				result[i] = max(result[j] + 1, result[i]);
+			}
+		}
+		fin = max(fin, result[i]);
+	}
+	printf("%d\n", n - fin);
+
+
+	return 0;
+}
