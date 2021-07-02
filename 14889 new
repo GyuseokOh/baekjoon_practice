@@ -1,0 +1,58 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int n;
+int insert[25][25];
+bool check[25];
+int result = 10000000;
+int all;
+
+void dfs(int len, int cur) {
+	if (len == n / 2) {
+		int team1 = 0;
+		int team2 = 0;
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (check[i] == true && check[j] == true) {
+					team1 += insert[i][j];
+				}
+				else if (check[i] == false && check[j] == false) {
+					team2 += insert[i][j];
+				}
+			}
+		}
+
+		if (abs(team1 - team2) < result) {
+			result = abs(team1 - team2);
+		}
+
+		return;
+	}
+
+	for (int i = cur; i < n; i++) {
+		if (check[i] == false) {
+			int curresult = 0;
+			check[i] = true;
+			dfs(len + 1, i+1);
+			check[i] = false;
+		}
+	}
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%d", &insert[i][j]);
+			all += insert[i][j];
+		}
+	}
+
+	dfs(0, 0);
+
+	printf("%d\n", result);
+
+	return 0;
+}
