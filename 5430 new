@@ -1,0 +1,95 @@
+#include<stdio.h>
+#include<string.h>
+#include<deque>
+
+using namespace std;
+
+char oper[100010];
+char insert[300010];
+int n;
+
+int main(void) {
+
+	int t;
+
+	scanf("%d", &t);
+
+	while (t--) {
+		int len;
+		bool flag = false;
+		bool err = false;
+		deque<int> dq;
+		scanf("%s", oper);
+		scanf("%d", &n);
+		scanf("%s", insert);
+		len = strlen(insert) - 1;
+
+		while (len >= 0) {
+			if (insert[len] == ',' || insert[len] == '[' || insert[len] == ']') {
+				len--;
+			}
+			else {
+				int ten = 1;
+				int cur = 0;
+
+				while ('0' <= insert[len] && insert[len] <= '9') {
+					cur += (ten*(insert[len] - '0'));
+					ten *= 10;
+					len--;
+				}
+
+				dq.push_front(cur);
+			}
+		}
+
+		len = strlen(oper);
+
+		for (int i = 0; i < len; i++) {
+			if (oper[i] == 'R') {
+				flag = !flag;
+			}
+			else {
+				if (n == 0) {
+					printf("error\n");
+					err = true;
+					break;
+				}
+
+				if (flag == false) {
+					dq.pop_front();
+				}
+				else {
+					dq.pop_back();
+				}
+				n--;
+			}
+		}
+
+		if (err == false) {
+			printf("[");
+			if (flag == false) {
+				for (int i = 0; i < n; i++) {
+					if (i == n - 1) {
+						printf("%d", dq[i]);
+					}
+					else {
+						printf("%d,", dq[i]);
+					}
+				}
+			}
+			else {
+				for (int i = n - 1; i >= 0; i--) {
+					if (i == 0) {
+						printf("%d", dq[i]);
+					}
+					else {
+						printf("%d,", dq[i]);
+					}
+				}
+			}
+			printf("]\n");
+		}
+	}
+
+	return 0;
+}
