@@ -1,0 +1,83 @@
+#include<stdio.h>
+#include<algorithm>
+#include<vector>
+
+using namespace std;
+
+int n, m;
+vector<int> insert1;
+vector<int> insert2;
+int result[500010];
+
+int lower(int target) {
+	int start = 0;
+	int end = n - 1;
+
+	while (start < end) {
+		int mid = (start + end) / 2;
+		if (insert1[mid] < target) {
+			start = mid + 1;
+		}
+		else {
+			end = mid;
+		}
+	}
+
+	return end;
+}
+
+int upper(int target) {
+	int start = 0;
+	int end = n - 1;
+
+	while (start < end) {
+		int mid = (start + end) / 2;
+		if (insert1[mid] <= target) {
+			start = mid + 1;
+		}
+		else {
+			end = mid;
+		}
+	}
+
+	return end;
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		int in;
+		scanf("%d", &in);
+		insert1.push_back(in);
+	}
+
+
+	scanf("%d", &m);
+
+	for (int i = 0; i < m; i++) {
+		int in;
+		scanf("%d", &in);
+		insert2.push_back(in);
+	}
+
+	sort(insert1.begin(), insert1.end());
+
+	for (int i = 0; i < m; i++) {
+		int low = lower(insert2[i]);
+		int high = upper(insert2[i]);
+
+		if (high == n - 1 && insert1[n - 1] == insert2[i]) {
+			high++;
+		}
+		result[i] = high - low;
+	}
+
+	for (int i = 0; i < m; i++) {
+		printf("%d ", result[i]);
+	}
+	printf("\n");
+
+	return 0;
+}
