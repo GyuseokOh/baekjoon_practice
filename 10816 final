@@ -1,0 +1,62 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+int insert1[500010];
+int insert2[500010];
+int result[500010];
+int n, m;
+
+int lower(int target) {
+	int start = 0;
+	int end = n - 1;
+
+	while (start < end) {
+		int mid = (start + end) / 2;
+		if (insert1[mid] < target) {
+			start = mid + 1;
+		}
+		else {
+			end = mid;
+		}
+	}
+
+	return end;
+}
+
+int upper(int target) {
+	int start = 0;
+	int end = n - 1;
+
+	while (start < end) {
+		int mid = (start + end) / 2;
+		if (insert1[mid] <= target) {
+			start = mid + 1;
+		}
+		else {
+			end = mid;
+		}
+	}
+
+	return end;
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &insert1[i]);
+	}
+
+	sort(insert1, insert1 + n);
+
+	scanf("%d", &m);
+
+	for (int i = 0; i < m; i++) {
+		scanf("%d", &insert2[i]);
+	}
+
+	return 0;
+}
