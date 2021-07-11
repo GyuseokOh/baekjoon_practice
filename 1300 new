@@ -1,0 +1,48 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+long long int n, k;
+long long int result;
+
+long long int calc(long long int mid) {
+	long long int cur = 0;
+	for (int i = 1; i <= n; i++) {
+		cur += min(mid / i, n);
+	}
+
+	return cur;
+}
+
+void bin(void) {
+
+	long long int start = 1;
+	long long int end = n * n;
+	long long int mid;
+
+	while (start <= end) {
+		mid = (start + end) / 2;
+		long long int cur = calc(mid);
+		
+		if (cur >= k) {
+			end = mid - 1;
+		}
+		else {
+			start = mid + 1;
+		}
+	}
+
+	result = start;
+}
+
+int main(void) {
+
+	scanf("%lld %lld", &n, &k);
+
+	bin();
+
+	printf("%lld\n", result);
+
+	return 0;
+}
