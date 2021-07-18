@@ -1,0 +1,76 @@
+#include<stdio.h>
+#include<limits.h>
+
+int n;
+int insert[15];
+int oper[4];
+int result[15];
+int result_max = INT_MIN;
+int result_min = INT_MAX;
+
+void dfs(int count) {
+	if (count == n - 1) {
+
+		int cur = insert[0];
+
+		for (int i = 0; i < n - 1; i++) {
+			if (result[i] == 0) {
+				cur = cur + insert[i + 1];
+			}
+			else if (result[i] == 1) {
+				cur = cur - insert[i + 1];
+			}
+			else if (result[i] == 2) {
+				cur = cur * insert[i + 1];
+			}
+			else if (result[i] == 3) {
+				if (cur < 0) {
+					cur = cur * -1;
+					cur = cur / insert[i + 1];
+					cur = cur * -1;
+				}
+				else {
+					cur = cur / insert[i + 1];
+				}
+			}
+		}
+
+		if (cur < result_min) {
+			result_min = cur;
+		}
+
+		if (cur > result_max) {
+			result_max = cur;
+		}
+
+		return;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		if (oper[i] > 0) {
+			result[count] = i;
+			oper[i]--;
+			dfs(count + 1);
+			oper[i]++;
+		}
+	}
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &insert[i]);
+	}
+
+	for (int i = 0; i < 4; i++) {
+		scanf("%d", &oper[i]);
+	}
+
+	dfs(0);
+
+	printf("%d\n%d\n", result_max, result_min);
+
+	return 0;
+}
