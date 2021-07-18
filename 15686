@@ -1,0 +1,126 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<queue>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+
+typedef struct {
+	int x;
+	int y;
+}input;
+
+int n, m;
+int insert[55][55];
+bool check[55][55];
+int result = 10000000;
+int xdir[4] = { 1,-1,0,0 };
+int ydir[4] = { 0,0,1,-1 };
+int c[50];
+bool b[50];
+vector<input> v;
+vector<input> qone;
+queue<input> q;
+
+int bfs(void) {
+
+	int x = q.front().x;
+	int y = q.front().y;
+
+	while (q.empty() != true) {
+		int curx = q.front().x;
+		int cury = q.front().y;
+		q.pop();
+
+		if (insert[curx][cury] == 2 && check[curx][cury] == true) {
+			while (q.empty() != true) {
+				q.pop();
+			}
+			return abs(x - curx) + abs(y - cury);
+		}
+
+		for (int i = 0; i < 4; i++) {
+			int newx = curx + xdir[i];
+			int newy = cury + ydir[i];
+
+			if (newx >= 0 && newy >= 0 && newx < n&&newy < n) {
+				q.push({ newx,newy });
+			}
+		}
+	}
+}
+
+void val(void) {
+	int cur = 0;
+	for(int i=0;i<qone.size();i++){
+		/*q.push({ qone.front().x,qone.front().y });
+		qone.pop();
+		cur += bfs();*/
+		int curx = qone[i].x;
+		int cury = qone[i].y;
+		int minval = 1000000;
+
+		for (int i = 0; i < v.size(); i++) {
+			if (b[i] == true) {
+				minval = min(minval, abs(curx - v[i].x) + abs(cury - v[i].y));
+				//printf("i : %d, minval : %d\n", i, minval);
+			}
+		}
+		//printf("\n");
+
+		cur += minval;
+	}
+
+	if (cur < result) {
+		//printf("cur : %d, result : %d\n", cur, result);
+		result = cur;
+	}
+}
+
+void dfs(int cur, int count) {
+	if (count == m) {
+		/*for (int i = 0; i < count; i++) {
+			printf("%d ", c[i]);
+		}
+		printf("\n");*/
+		val();
+
+		return;
+	}
+
+	for (int i = cur; i < v.size(); i++) {
+		if (b[i] == false) {
+			b[i] = true;
+			//check[v[i].x][v[i].y] = true;
+			c[count] = i;
+			dfs(i + 1, count + 1);
+			//check[v[i].x][v[i].y] = false;
+			b[i] = false;
+		}
+	}
+}
+
+int main(void) {
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%d", &insert[i][j]);
+
+			if (insert[i][j] == 2) {
+				v.push_back({ i,j });
+			}
+			if (insert[i][j] == 1) {
+				qone.push_back({ i,j });
+			}
+		}
+	}
+
+	dfs(0, 0);
+
+	printf("%d\n", result);
+
+	return 0;
+}
