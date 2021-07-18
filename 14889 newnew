@@ -1,0 +1,61 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<algorithm>
+
+using namespace std;
+
+int n;
+int result = 10000000;
+int insert[25][25];
+bool check[25];
+
+void dfs(int cur, int count) {
+	if (count == n / 2) {
+		int team1 = 0;
+		int team2 = 0;
+		int curres;
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (i != j) {
+					if (check[i] == true && check[j] == true) {
+						team1 += insert[i][j];
+					}
+					else if (check[i] == false && check[j] == false) {
+						team2 += insert[i][j];
+					}
+				}
+			}
+		}
+
+		curres = abs(team1 - team2);
+		if (curres < result) {
+			result = curres;
+		}
+
+		return;
+	}
+
+	for (int i = cur; i < n; i++) {
+		check[i] = true;
+		dfs(i + 1, count + 1);
+		check[i] = false;
+	}
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%d", &insert[i][j]);
+		}
+	}
+
+	dfs(0, 0);
+
+	printf("%d\n", result);
+
+	return 0;
+}
