@@ -1,0 +1,94 @@
+#include<stdio.h>
+
+typedef struct {
+	int a;
+	int b;
+}line;
+
+int n, m, h;
+int result = 100000;
+bool map[50][50];
+
+bool val(void) {
+	for (int i = 1; i <= n; i++) {
+		int cur = i;
+		for (int j = 1; j <= h; j++) {
+			if (map[j][cur] == true) {
+				cur++;
+			}
+			else if (map[j][cur - 1] == true) {
+				cur--;
+			}
+		}
+
+		if (cur != i) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void dfs(int cur, int count) {
+	//printf("cur : %d, count : %d\n", cur, count);
+	if (count > 3) {
+		return;
+	}
+
+	if (cur == (n*h)) {
+		/*printf("result cur : %d, count : %d\n", cur, count);
+		for (int i = 1; i <= h; i++) {
+			for (int j = 1; j <= n; j++) {
+				printf("%d ", map[i][j]);
+			}
+			printf("\n");
+		}
+
+		printf("\n");*/
+
+
+		if (val() == true) {
+			if (count < result) {
+				//printf("before result : %d, cur result : %d\n", result, count);
+				result = count;
+			}
+		}
+
+		return;
+	}
+
+	int x = (cur - 1) / n + 1; 
+	int y = (cur - 1) % n + 1;
+
+	//printf("x : %d, y : %d\n", x, y);
+
+	if (y != n && map[x][y] == false) {
+		map[x][y] = true;
+		dfs(cur + 1, count + 1);
+		map[x][y] = false;
+	}
+
+	dfs(cur + 1, count);
+}
+
+int main(void) {
+
+	scanf("%d %d %d", &n, &m, &h);
+
+	for (int i = 0; i < m; i++) {
+		int a, b;
+		scanf("%d %d", &a, &b);
+		map[a][b] = true;
+	}
+
+	dfs(1, 0);
+
+	if (result == 100000) {
+		printf("-1\n");
+	}
+	else {
+		printf("%d\n", result);
+	}
+
+	return 0;
+}
