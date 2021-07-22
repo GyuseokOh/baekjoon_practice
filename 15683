@@ -1,0 +1,438 @@
+#include<stdio.h>
+
+int n, m;
+int insert[10][10];
+int result[10][10];
+int fin = 1000000;
+
+int val(void) {
+	bool check[10][10] = { false };
+	int count = 0;
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			if (insert[i][j] == 1) {
+				int curx = i;
+				int cury = j;
+				if (result[i][j] == 1) {
+					while (cury < m) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury++;
+					}
+				}
+				else if (result[i][j] == 2) {
+					while (curx < n) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx++;
+					}
+				}
+				else if (result[i][j] == 3) {
+					while (cury >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury--;
+					}
+				}
+				else if (result[i][j] == 4) {
+					while (curx >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx--;
+					}
+				}
+			}
+			else if (insert[i][j] == 2) {
+				int curx = i;
+				int cury = j;
+				if (result[i][j] == 1) {
+					while (cury < m) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury++;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (cury >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury--;
+					}
+				}
+				else if (result[i][j] == 2) {
+					while (curx < n) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx++;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (curx >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx--;
+					}
+				}
+			}
+			else if (insert[i][j] == 3) {
+				int curx = i;
+				int cury = j;
+				if (result[i][j] == 1) {
+					while (curx >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx--;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (cury < m) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury++;
+					}
+				}
+				else if (result[i][j] == 2) {
+					while (curx < n) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx++;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (cury < m) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury++;
+					}
+				}
+				else if (result[i][j] == 3) {
+					while (curx < n) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx++;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (cury >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury--;
+					}
+				}
+				else if (result[i][j] == 4) {
+					while (curx >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx--;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (cury >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury--;
+					}
+				}
+			}
+			else if (insert[i][j] == 4) {
+				int curx = i;
+				int cury = j;
+				if (result[i][j] == 1) {
+					while (cury >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury--;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (curx >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx--;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (cury < m) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury++;
+					}
+				}
+				else if (result[i][j] == 2) {
+					while (curx < n) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx++;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (curx >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx--;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (cury < m) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury++;
+					}
+				}
+				else if (result[i][j] == 3) {
+					while (curx < n) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx++;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (cury >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury--;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (cury < m) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury++;
+					}
+				}
+				else if (result[i][j] == 4) {
+					while (curx < n) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx++;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (cury >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						cury--;
+					}
+
+					curx = i;
+					cury = j;
+
+					while (curx >= 0) {
+						if (insert[curx][cury] == 6) {
+							break;
+						}
+						check[curx][cury] = true;
+						curx--;
+					}
+				}
+			}
+			else if (insert[i][j] == 5) {
+				int curx = i;
+				int cury = j;
+				while (cury < m) {
+					if (insert[curx][cury] == 6) {
+						break;
+					}
+					check[curx][cury] = true;
+					cury++;
+				}
+
+				curx = i;
+				cury = j;
+
+				while (curx < n) {
+					if (insert[curx][cury] == 6) {
+						break;
+					}
+					check[curx][cury] = true;
+					curx++;
+				}
+
+				curx = i;
+				cury = j;
+
+				while (cury >= 0) {
+					if (insert[curx][cury] == 6) {
+						break;
+					}
+					check[curx][cury] = true;
+					cury--;
+				}
+
+				curx = i;
+				cury = j;
+
+				while (curx >= 0) {
+					if (insert[curx][cury] == 6) {
+						break;
+					}
+					check[curx][cury] = true;
+					curx--;
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			//printf("%d ", check[i][j]);
+			if (check[i][j] == false && insert[i][j]!=6) {
+				count++;
+			}
+		}
+		//printf("\n");
+	}
+	//printf("%d\n", count);
+
+	return count;
+}
+
+void dfs(int cur) {
+
+	if (cur == n * m) {
+		int curresult = val();
+
+		if (curresult < fin) {
+			//printf("curresult : %d, fin : %d\n\n", curresult, fin);
+			fin = curresult;
+		}
+
+		return;
+	}
+
+	int x = cur / m;
+	int y = cur % m;
+
+	if (insert[x][y] == 0) {
+		dfs(cur + 1);
+	}
+	else {
+		if (insert[x][y] == 1) {
+			for (int i = 1; i <= 4; i++) {
+				result[x][y] = i;
+				dfs(cur + 1);
+			}
+		}
+		else if (insert[x][y] == 2) {
+			for (int i = 1; i <= 2; i++) {
+				result[x][y] = i;
+				dfs(cur + 1);
+			}
+		}
+		else if (insert[x][y] == 3) {
+			for (int i = 1; i <= 4; i++) {
+				result[x][y] = i;
+				dfs(cur + 1);
+			}
+		}
+		else if (insert[x][y] == 4) {
+			for (int i = 1; i <= 4; i++) {
+				result[x][y] = i;
+				dfs(cur + 1);
+			}
+		}
+		else {
+			dfs(cur + 1);
+		}
+	}
+}
+
+int main(void) {
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			scanf("%d",&insert[i][j]);
+		}
+	}
+
+	//printf("\n");
+
+	dfs(0);
+
+	printf("%d\n", fin);
+
+	return 0;
+}
