@@ -1,0 +1,77 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+typedef struct {
+	int money;
+	int end;
+}input;
+
+int n;
+int day[20];
+int pay[20];
+int result[20];
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 1; i <= n; i++) {
+		scanf("%d %d", &day[i], &pay[i]);
+	}
+
+	for (int i = n; i >= 1; i--) {
+		int cur = i + day[i];
+
+		if (cur > n + 1) {
+			result[i] = result[i + 1];
+		}
+		else {
+			result[i] = max(result[i + 1], result[cur] + pay[i]);
+		}
+	}
+
+	/*for (int i = 1; i <= n+1; i++) {
+		input result_choose;
+		input result_unchoose;
+
+		result_choose.money = 0;
+		result_unchoose.money = 0;
+
+		if (day[i] + i <= n + 1) {
+			result_choose.money = pay[i];
+			result_choose.end = i + day[i];
+
+			for (int j = 1; j < i; j++) {
+				if (result[j].end <= i) {
+					if (result_choose.money < result[j].money + pay[i]) {
+						result_choose.money = result[j].money + pay[i];
+					}
+				}
+			}
+		}
+
+		for (int j = 1; j < i; j++) {
+			if (result[j].end <= n + 1) {
+				if (result_unchoose.money < result[j].money) {
+					result_unchoose.money = result[j].money;
+					result_unchoose.end = result[j].end;
+				}
+			}
+		}
+
+		if (result_choose.money >= result_unchoose.money) {
+			result[i].money = result_choose.money;
+			result[i].end = result_choose.end;
+		}
+		else {
+			result[i].money = result_unchoose.money;
+			result[i].end = result_unchoose.end;
+		}
+	}*/
+
+	printf("%d\n", result[1]);
+
+	return 0;
+}
