@@ -1,0 +1,41 @@
+#include<stdio.h>
+
+int n;
+int money[20];
+int day[20];
+int result = -1;
+
+void dfs(int cur, int add) {
+
+	if (cur > n + 1) {
+		return;
+	}
+
+	if (add > result) {
+		result = add;
+	}
+
+	if (cur == n + 1) {
+		return;
+	}
+
+	dfs(cur + day[cur], add + money[cur]);
+	dfs(cur + 1, add);
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 1; i <= n; i++) {
+		scanf("%d %d", &day[i], &money[i]);
+	}
+
+	for (int i = 1; i <= n; i++) {
+		dfs(i, 0);
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}
