@@ -1,0 +1,129 @@
+#include<stdio.h>
+#include<vector>
+#include<queue>
+#include<algorithm>
+
+using namespace std;
+
+typedef struct {
+	int x;
+	int y;
+	int body;
+	int time;
+	int ecount;
+}s;
+
+typedef struct {
+	int x;
+	int y;
+	int distance;
+}f;
+
+vector<f> v;
+s shark;
+int n;
+int insert[25][25];
+int xdir[4] = { 1,-1,0,0 };
+int ydir[4] = { 0,0,1,-1 };
+
+bool inc(f a, f b) {
+	if (a.distance == b.distance) {
+		if (a.x == b.x) {
+			return a.y < b.y;
+		}
+		return a.x < b.x;
+	}
+	return a.distance < b.distance;
+}
+
+void bfs(void) {
+	bool check[25][25] = { false };
+	
+	queue<f> q;
+	q.push({ shark.x,shark.y, 0 });
+	check[shark.x][shark.y] = true;
+
+	while (q.empty() != true) {
+		int curx = q.front().x;
+		int cury = q.front().y;
+		int curd = q.front().distance;
+		q.pop();
+
+		for (int i = 0; i < 4; i++) {
+			int newx = curx + xdir[i];
+			int newy = cury + ydir[i];
+
+			if (newx >= 0 && newy >= 0 && newx < n&&newy < n) {
+				if (check[newx][newy] == false) {
+					check[newx][newy] = true;
+					if (insert[newx][newy] == 0||insert[newx][newy]==shark.body) {
+						q.push({ newx,newy,curd + 1 });
+					}
+					else if (insert[newx][newy] < shark.body) {
+						v.push_back({ newx,newy,curd + 1 });
+						q.push({ newx,newy,curd + 1 });
+					}
+				}
+			}
+		}
+	}
+
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%d", &insert[i][j]);
+
+			if (insert[i][j] == 9) {
+				shark.x = i;
+				shark.y = j;
+				shark.body = 2;
+				shark.ecount = 0;
+				shark.time = 0;
+			}
+		}
+	}
+
+	while (1) {
+		v.clear();
+
+		bfs();
+
+		if (v.size() == 0) {
+			break;
+		}
+		else if (v.size() == 1) {
+			insert[shark.x][shark.y] = 0;
+			shark.x = v[0].x;
+			shark.y = v[0].y;
+			insert[shark.x][shark.y] = 9;
+			shark.time += v[0].distance;
+			shark.ecount++;
+			if (shark.ecount == shark.body) {
+				shark.body++;
+				shark.ecount = 0;
+			}
+		}
+		else {
+			sort(v.begin(), v.end(), inc);
+			insert[shark.x][shark.y] = 0;
+			shark.x = v[0].x;
+			shark.y = v[0].y;
+			insert[shark.x][shark.y] = 9;
+			shark.time += v[0].distance;
+			shark.ecount++;
+			if (shark.ecount == shark.body) {
+				shark.body++;
+				shark.ecount = 0;
+			}
+		}
+	}
+
+	printf("%d\n", shark.time);
+
+	return 0;
+}
