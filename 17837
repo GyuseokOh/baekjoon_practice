@@ -1,0 +1,153 @@
+#include<stdio.h>
+#include<vector>
+#include<deque>
+
+using namespace std;
+
+typedef struct {
+	int x;
+	int y;
+	int way;
+}mal;
+
+int m[15][15];
+deque<int> insert[15][15];
+int xdir[6] = { 0, 0,0,-1,1,0 };
+int ydir[6] = { 0, 1,-1,0,0,0 };
+
+mal mm[15];
+int n, k;
+int turn = 0;
+
+int main(void) {
+	bool run_flag = false;
+
+	scanf("%d %d", &n, &k);
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			scanf("%d", &m[i][j]);
+		}
+	}
+
+	for (int i = 1; i <= k; i++) {
+		int x, y, way;
+		scanf("%d %d %d", &x, &y, &way);
+		mm[i].x = x;
+		mm[i].y = y;
+		mm[i].way = way;
+		insert[x][y].push_back(i);
+	}
+
+	while (1) {
+		turn++;
+
+		if (turn > 1000) {
+			printf("-1\n");
+			break;
+		}
+
+		/*printf("turn : %d\n", turn);
+		for (int i = 1; i <= k; i++) {
+			printf("i : %d, x ; %d, y : %d, way : %d\n", i, mm[i].x, mm[i].y, mm[i].way);
+		}
+
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				printf("x : %d, y: %d\n", i, j);
+				for (int t = 0; t < insert[i][j].size(); t++) {
+					printf("%d ", insert[i][j][t]);
+				}
+				printf("\n");
+			}
+			printf("\n");
+		}
+		printf("\n");*/
+
+		for (int i = 1; i <= k; i++) {
+			bool flag = false;
+			int curx = mm[i].x;
+			int cury = mm[i].y;
+			int curway = mm[i].way;
+
+			int newx = curx + xdir[curway];
+			int newy = cury + ydir[curway];
+
+			if (newx < 1 || newy < 1 || newx > n || newy > n || m[newx][newy] == 2) {
+				if (curway == 1) {
+					mm[i].way = 2;
+				}
+				else if (curway == 2) {
+					mm[i].way = 1;
+				}
+				else if (curway == 3) {
+					mm[i].way = 4;
+				}
+				else if (curway == 4) {
+					mm[i].way = 3;
+				}
+
+				curway = mm[i].way;
+				newx = curx + xdir[curway];
+				newy = cury + ydir[curway];
+
+				if (newx < 1 || newy < 1 || newx > n || newy > n || m[newx][newy] == 2) {
+					flag = true;
+				}
+			}
+
+			if (flag == false) {
+				deque<int>cur;
+				if (m[newx][newy] == 0) {
+					while (1) {
+						int curm = insert[curx][cury].back();
+						insert[curx][cury].pop_back();
+						mm[curm].x = newx;
+						mm[curm].y = newy;
+						cur.push_back(curm);
+
+						if (curm == i) {
+							break;
+						}
+					}
+
+					while (cur.empty() != true) {
+						int back = cur.back();
+						insert[newx][newy].push_back({ back });
+						cur.pop_back();
+					}
+				}
+				else if (m[newx][newy] == 1) {
+					while (1) {
+						int curm = insert[curx][cury].back();
+						insert[curx][cury].pop_back();
+						mm[curm].x = newx;
+						mm[curm].y = newy;
+						cur.push_back(curm);
+
+						if (curm == i) {
+							break;
+						}
+					}
+					while (cur.empty() != true) {
+						int front = cur.front();
+						insert[newx][newy].push_back({ front });
+						cur.pop_front();
+					}
+				}
+			}
+
+			if (insert[newx][newy].size() >= 4) {
+				run_flag = true;
+				break;
+			}
+		}
+
+		if (run_flag == true) {
+			printf("%d\n", turn);
+			break;
+		}
+	}
+
+	return 0;
+}
