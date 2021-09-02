@@ -1,0 +1,125 @@
+#include<stdio.h>
+#include<string.h>
+#include<queue>
+
+using namespace std;
+
+typedef struct {
+	int x;
+	int y;
+}input;
+
+int n, m;
+int max = -1;
+int insert[10][10];
+int result = -1;
+int xdir[4] = { 1,-1,0,0 };
+int ydir[4] = { 0,0,1,-1 };
+bool check[10][10];
+input resultcheck[110];
+
+void bfs(int x, int y) {
+	bool visited[10][10] = { false, };
+	queue<input> q;
+
+	check[x][y] = true;
+	q.push({ x,y });
+
+	while (q.empty() != true) {
+		int curx = q.front().x;
+		int cury = q.front().y;
+		q.pop();
+
+		//printf("curx : %d, cury : %d\n", curx, cury);
+		
+		for (int i = 0; i < 4; i++) {
+			int newx = curx + xdir[i];
+			int newy = cury + ydir[i];
+
+			if (newx >= 0 && newy >= 0 && newx < n&&newy < m) {
+				if (insert[newx][newy] == 0 && check[newx][newy] == false) {
+					check[newx][newy] = true;
+					q.push({ newx,newy });
+				}
+			}
+		}
+	}
+}
+
+void dfs(int num, int count) {
+	if (count == 3) {
+
+		/*for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				printf("%d ", insert[i][j]);
+			}
+			printf("\n");
+		}*/
+
+		/*for (int i = 0; i < count; i++) {
+			printf("%dst x : %d, y : %d\n", i, resultcheck[i].x, resultcheck[i].y);
+		}*/
+
+		int curresult = 0;
+
+		for (int i = 0; i < n; i++) {
+			memset(check[i], false, sizeof(check[i]));
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (insert[i][j] == 2 && check[i][j]==false) {
+					bfs(i, j);
+
+					//printf("\n");
+				}
+			}
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (insert[i][j] == 0 && check[i][j] == false) {
+					curresult++;
+				}
+			}
+		}
+
+		if (curresult > result) {
+			result = curresult;
+		}
+		return;
+	}
+
+	int x = num / m;
+	int y = num % m;
+
+	if (x >= n || y >= m) {
+		return;
+	}
+
+	if (insert[x][y] == 0) {
+		insert[x][y] = 1;
+		resultcheck[count].x = x;
+		resultcheck[count].y = y;
+		dfs(num + 1, count + 1);
+		insert[x][y] = 0;
+	}
+	dfs(num + 1, count);
+}
+
+int main(void) {
+	
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			scanf("%d", &insert[i][j]);
+		}
+	}
+
+	dfs(0, 0);
+
+	printf("%d\n", result);
+
+	return 0;
+}
