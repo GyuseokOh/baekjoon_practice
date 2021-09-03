@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+int m, n, k;
+int insert[110][110];
+int result[200];
+int xdir[4] = { 1,-1,0,0 };
+int ydir[4] = { 0,0,1,-1 };
+
+bool inc(int a, int b) {
+	return a < b;
+}
+
+void dfs(int x,int y, int cnt) {
+	insert[x][y] = cnt;
+	result[cnt]++;
+
+	for (int i = 0; i < 4; i++) {
+		int newx = x + xdir[i];
+		int newy = y + ydir[i];
+
+		if (newx >= 0 && newy >= 0 && newx < m&&newy < n) {
+			if (insert[newx][newy] == 0) {
+				dfs(newx, newy, cnt);
+			}
+		}
+	}
+}
+
+int main(void) {
+
+	int cnt = 1;
+
+	scanf("%d %d %d", &m, &n, &k);
+
+	for (int i = 0; i < k; i++) {
+		int x1, y1, x2, y2;
+		scanf("%d %d %d %d", &x1, &y1, &x2, &y2);
+
+		for (int i = (m - y2); i < (m - y1); i++) {
+			for (int j = x1; j < x2; j++) {
+				insert[i][j] = -1;
+			}
+		}
+	}
+
+	for (int i = 0; i < m; i++) {
+		for (int j = 0; j < n; j++) {
+			if (insert[i][j] == 0) {
+				dfs(i, j, cnt);
+				cnt++;
+			}
+		}
+	}
+
+	sort(result + 1, result + cnt, inc);
+
+	printf("%d\n", cnt - 1);
+
+	for (int i = 1; i < cnt; i++) {
+		printf("%d\n", result[i]);
+	}
+
+	return 0;
+}
