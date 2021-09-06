@@ -1,0 +1,131 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#include<queue>
+
+using namespace std;
+
+typedef struct {
+	int x;
+	int y;
+}input;
+
+int n, l, r;
+int time = 0;
+int insert[60][60];
+bool moved = false;
+int xdir[4] = { 1,-1,0,0 };
+int ydir[4] = { 0,0,1,-1 };
+int boundary[60][60] = { 0, };
+int population[3000];
+queue<input> q;
+
+int find(int x, int y, int num) {
+
+	int result = 1;
+	population[num] = 0;
+
+	boundary[x][y] = num;
+	population[num] += insert[x][y];
+
+	q.push({ x,y });
+
+	while (q.empty() != true) {
+		int curx = q.front().x;
+		int cury = q.front().y;
+		q.pop();
+
+		for (int i = 0; i < 4; i++) {
+			int newx = curx + xdir[i];
+			int newy = cury + ydir[i];
+
+			if (newx >= 0 && newy >= 0 && newx < n&&newy < n) {
+				if (boundary[newx][newy] == 0 && abs(insert[curx][cury] - insert[newx][newy]) >= l && abs(insert[curx][cury] - insert[newx][newy]) <= r) {
+					result++;
+					boundary[newx][newy] = num;
+					population[num] += insert[newx][newy];
+					q.push({ newx,newy });
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+int main(void) {
+
+	scanf("%d %d %d", &n, &l, &r);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%d", &insert[i][j]);
+		}
+	}
+	
+	while (1) {
+		for (int i = 0; i < n; i++) {
+			population[i] = 0;
+			for (int j = 0; j < n; j++) {
+				boundary[i][j] = 0;
+			}
+		}
+		moved = false;
+		int num = 1;
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (boundary[i][j] == 0) {
+					int curcount = find(i, j, num);
+					if (curcount == 1) {
+						boundary[i][j] = 0;
+						population[num] = 0;
+					}
+					else {
+						moved = true;
+						population[num] = floor((double)population[num] / curcount);
+						num++;
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (boundary[i][j] != 0) {
+					insert[i][j] = population[boundary[i][j]];
+				}
+			}
+		}
+
+		if (moved == false) {
+			printf("%d\n", time);
+			break;
+		}
+
+		time++;
+
+		/*printf("num : %d\n", num);
+		for (int i = 1; i < num; i++) {
+			printf("%d\n", population[i]);
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				printf("%d ", boundary[i][j]);
+			}
+			printf("\n");
+		}
+		printf("\n");
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				printf("%d ", insert[i][j]);
+			}
+			printf("\n");
+		}
+		printf("\n");*/
+	}
+
+	return 0;
+}
