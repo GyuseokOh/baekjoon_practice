@@ -1,0 +1,64 @@
+#include <string>
+#include <stdio.h>
+#include<iostream>
+#include <sstream>
+#include <vector>
+#include<map>
+
+using namespace std;
+
+bool connection[1010][1010];
+int reportnum[1010];
+
+vector<int> solution(vector<string> id_list, vector<string> report, int k) {
+    vector<int> answer;
+    map<string,int> m;
+    vector<string> words;
+    
+    for(int i=0;i<id_list.size();i++){
+        m[id_list[i]]=i;
+    }
+    
+    for(int i=0;i<report.size();i++){
+        stringstream sstream(report[i]);
+        string word;
+
+        while(getline(sstream, word, ' '))
+        {
+            words.push_back(word);
+        }
+    }
+
+    
+    for(int i=0;i<words.size();i++){
+        //printf("I :%d\n",i);
+        if(i%2==0){
+            if(connection[m.find(words[i])->second][m.find(words[i+1])->second]==true){
+                i+=1;
+                continue;
+            }
+            connection[m.find(words[i])->second][m.find(words[i+1])->second]=true;
+        }
+        else{
+            reportnum[m.find(words[i])->second]++;
+        }
+    }
+
+    /*for(int i=0;i<id_list.size();i++){
+        printf("%d ",reportnum[i]);
+    }*/
+    
+    for(int i=0;i<id_list.size();i++){
+        int curcount=0;
+        for(int j=0;j<id_list.size();j++){
+            if(connection[i][j]==true){
+                if(reportnum[j]>=k){
+                    curcount++;
+                }
+            }
+        }
+        answer.push_back(curcount);
+    }
+    
+    return answer;
+}
