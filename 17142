@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<vector>
+#include<queue>
+
+using namespace std;
+
+struct virus {
+	int x;
+	int y;
+};
+
+int n, m;
+int insert[15][15];
+int xdir[4] = { 1,-1,0,0 };
+int ydir[4] = { 0,0,1,-1 };
+bool viruscheck[110];
+
+vector<virus> v;
+
+void dfs()
+
+int main(void) {
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%d", &insert[i][j]);
+			if (insert[i][j] == 2) {
+				v.push_back({ i,j });
+			}
+		}
+	}
+
+
+
+	return 0;
+}
