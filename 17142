@@ -4,20 +4,100 @@
 
 using namespace std;
 
+struct input {
+	int x;
+	int y;
+};
+
 struct virus {
 	int x;
 	int y;
 };
 
 int n, m;
-int insert[15][15];
+int insert[55][55];
 int xdir[4] = { 1,-1,0,0 };
 int ydir[4] = { 0,0,1,-1 };
-bool viruscheck[110];
+int minresult = 10000000;
+int bcount = 0;
+bool vcheck[2600];
 
 vector<virus> v;
+queue<input> q;
 
-void dfs()
+int bfs(void) {
+
+	int curcheck[55][55] = { 0, };
+	int result = -1;
+
+	for (int i = 0; i < v.size(); i++) {
+		if (vcheck[i] == true) {
+			q.push({ v[i].x,v[i].y });
+		}
+		else {
+			curcheck[v[i].x][v[i].y] = -1;
+		}
+	}
+
+	while (q.empty() != true) {
+		int curx = q.front().x;
+		int cury = q.front().y;
+		q.pop();
+		if (result < curcheck[curx][cury]) {
+			result = curcheck[curx][cury];
+		}
+
+		for (int i = 0; i < 4; i++) {
+			int newx = curx + xdir[i];
+			int newy = cury + ydir[i];
+
+			if (newx >= 0 && newy >= 0 && newx < n&&newy < n) {
+				if (insert[newx][newy] == 0 && curcheck[newx][newy] == 0) {
+					curcheck[newx][newy] = curcheck[curx][cury] + 1;
+					q.push({ newx,newy });
+				}
+			}
+		}
+	}
+
+	/*printf("\n");
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			printf("%d ", curcheck[i][j]);
+		}
+		printf("\n");
+	}*/
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (insert[i][j] == 0 && curcheck[i][j] == 0) {
+				return 10000000;
+			}
+		}
+	}
+
+	return result;
+}
+
+void dfs(int cur, int num) {
+	if (cur == v.size()) {
+		return;
+	}
+
+	if (num == 0) {
+		int curresult = bfs();
+		if (curresult < minresult) {
+			minresult = curresult;
+		}
+
+		return;
+	}
+
+	vcheck[cur] = true;
+	dfs(cur + 1, num - 1);
+	vcheck[cur] = false;
+	dfs(cur + 1, num);
+}
 
 int main(void) {
 
@@ -32,7 +112,14 @@ int main(void) {
 		}
 	}
 
+	dfs(0, m);
 
+	if (minresult == 10000000) {
+		printf("-1\n");
+	}
+	else {
+		printf("%d\n", minresult);
+	}
 
 	return 0;
 }
