@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<string.h>
+#include<vector>
+
+using namespace std;
+
+char insert[100];
+vector<char> v;
+int len;
+long long int result = 0;
+int temp = 1;
+bool flag = false;
+
+int main(void) {
+
+	scanf("%s", insert);
+
+	len = strlen(insert);
+
+	for (int i = 0; i < len; i++) {
+		if (insert[i] == '(') {
+			v.push_back('(');
+			temp *= 2;
+		}
+		else if (insert[i] == '[') {
+			v.push_back('[');
+			temp *= 3;
+		}
+		else if (insert[i] == ')' && (v.empty() == true || v.back() != '(')) {
+			//printf("i : %d, vfront : %c\n", i, v.front());
+			flag = true;
+			break;
+		}
+		else if (insert[i] == ']' && (v.empty() == true || v.back() != '[')) {
+			//printf("i : %d, vfront : %c\n", i, v.front());
+			flag = true;
+			break;
+		}
+		else if (insert[i] == ')') {
+			if (insert[i - 1] == '(') {
+				result += temp;
+			}
+
+			v.pop_back();
+			temp /= 2;
+		}
+		else if (insert[i] == ']') {
+			if (insert[i - 1] == '[') {
+				result += temp;
+			}
+
+			v.pop_back();
+			temp /= 3;
+		}
+	}
+
+	//printf("flag : %d, empty : %d\n", flag, v.size());
+
+	if (flag == true || v.empty() != true) {
+		printf("0\n");
+	}
+	else {
+		printf("%lld\n", result);
+	}
+
+	return 0;
+}
