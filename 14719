@@ -1,0 +1,55 @@
+#include<stdio.h>
+
+int h, w;
+int result = 0;
+bool insert[510][510];
+
+bool findleft(int x, int y) {
+	
+	for (int i = y; i >= 0; i--) {
+		if (insert[x][i] == true) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool findright(int x, int y) {
+	for (int i = y; i < w; i++) {
+		if (insert[x][i] == true) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+int main(void) {
+
+	scanf("%d %d", &h, &w);
+
+	for (int i = 0; i < w; i++) {
+		int cur;
+		scanf("%d", &cur);
+
+		for (int j = 0; j < cur; j++) {
+			insert[h - j - 1][i] = true;
+		}
+	}
+
+	for (int i = h - 1; i >= 0; i--) {
+		for (int j = 0; j < w; j++) {
+			if (insert[i][j] == false) {
+				if (findleft(i, j) == true && findright(i, j) == true) {
+					insert[i][j] = true;
+					result++;
+				}
+			}
+		}
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}
