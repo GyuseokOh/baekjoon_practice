@@ -1,0 +1,70 @@
+#include<stdio.h>
+#include<string.h>
+
+int n, k;
+char insert[55][20];
+bool a[27];
+int mresult = 0;
+
+void check(void) {
+
+	int cresult = 0;
+
+	for (int i = 0; i < n; i++) {
+		int len = strlen(insert[i]);
+		bool flag = false;
+
+		for (int j = 0; j < len; j++) {
+			if (a[insert[i][j] - 'a'] == false) {
+				flag = true;
+				break;
+			}
+		}
+
+		if (flag == false) {
+			cresult++;
+		}
+	}
+
+	if (cresult > mresult) {
+		mresult = cresult;
+	}
+}
+
+void dfs(int cur, int num) {
+	if (num == 0) {
+
+		check();
+
+		return;
+	}
+
+	for (int i = cur; i < 26; i++) {
+		if (a[i] == false && num > 0) {
+			a[i] = true;
+			dfs(i + 1, num - 1);
+			a[i] = false;
+		}
+	}
+}
+
+int main(void) {
+
+	scanf("%d %d", &n, &k);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%s", insert[i]);
+	}
+
+	a['a' - 'a'] = true;
+	a['n' - 'a'] = true;
+	a['t' - 'a'] = true;
+	a['i' - 'a'] = true;
+	a['c' - 'a'] = true;
+
+	dfs(0, k - 5);
+
+	printf("%d\n", mresult);
+
+	return 0;
+}
