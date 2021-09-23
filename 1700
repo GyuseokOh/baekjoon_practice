@@ -1,0 +1,67 @@
+#include<stdio.h>
+
+int insert[110];
+int plug[110];
+int result=0;
+int n,k;
+
+int main(void){
+
+  scanf("%d %d",&n,&k);
+
+  for(int i=0;i<k;i++){
+    scanf("%d",&insert[i]);
+  }
+
+  for(int i=0;i<k;i++){
+    bool flag=false;
+
+    for(int j=0;j<n;j++){
+      if(plug[j]==insert[i]){
+        flag=true;
+        break;
+      }
+    }
+
+    if(flag==true){
+      continue;
+    }
+
+    for(int j=0;j<n;j++){
+      if(plug[j]==0){
+        plug[j]=insert[i];
+        flag=true;
+        break;
+      }
+    }
+
+    if(flag==true){
+      continue;
+    }
+
+    int index;
+    int findex=-1;
+
+    for(int j=0;j<n;j++){
+      int curlen=0;
+      for(int t=i+1;t<k;t++){
+        if(plug[j]==insert[t]){
+          break;
+        }
+        curlen++;
+      }
+
+      if(curlen>findex){
+        findex=curlen;
+        index=j;
+      }
+    }
+
+    result++;
+    plug[index]=insert[i];
+  }
+
+  printf("%d\n",result);
+
+  return 0;
+}
