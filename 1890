@@ -1,0 +1,45 @@
+#include<stdio.h>
+
+int n;
+int insert[110][110];
+long long int result[110][110];
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%d", &insert[i][j]);
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (i == 0 && j == 0) {
+				if (i + insert[i][j] < n) {
+					result[i + insert[i][j]][j]++;
+				}
+				if (j + insert[i][j] < n) {
+					result[i][j + insert[i][j]]++;
+				}
+			}
+			else if (i == n - 1 && j == n - 1) {
+				continue;
+			}
+			else {
+				if (result[i][j] > 0) {
+					if (i + insert[i][j] < n) {
+						result[i + insert[i][j]][j] += result[i][j];
+					}
+					if (j + insert[i][j] < n) {
+						result[i][j + insert[i][j]] += result[i][j];
+					}
+				}
+			}
+		}
+	}
+	printf("%lld\n", result[n - 1][n - 1]);
+
+	return 0;
+}
