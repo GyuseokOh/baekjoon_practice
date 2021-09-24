@@ -1,0 +1,42 @@
+#include<stdio.h>
+
+int n, m;
+int result = 0;
+int insert[10010];
+
+int main(void) {
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 1; i <= n; i++) {
+		scanf("%d", &insert[i]);
+	}
+
+	int start = 1;
+	int end = 1;
+	int cur = insert[1];
+
+	while (start <= end && end <= n) {
+		if (cur <= m) {
+			if (cur == m) {
+				result++;
+			}
+
+			end++;
+			cur += insert[end];
+		}
+		else {
+			cur -= insert[start];
+			start++;
+
+			if (start > end) {
+				end = start;
+				cur = insert[start];
+			}
+		}
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}
