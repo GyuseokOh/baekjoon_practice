@@ -1,0 +1,87 @@
+#include<stdio.h>
+#include<iostream>
+#include<string>
+
+using namespace std;
+
+string insert;
+
+int val(void) {
+
+	int cur = 0;
+
+	while (cur < insert.size()) {
+		if (insert[cur] == '1') {
+			if (cur + 2 < insert.size()) {
+				if (insert[cur + 1] == '0'&&insert[cur + 2] == '0') {
+					cur += 3;
+
+					if (cur >= insert.size()) {
+						return 0;
+					}
+
+					while (cur < insert.size() && insert[cur] == '0') {
+						cur++;
+					}
+
+					if (cur == insert.size()) {
+						return 0;
+					}
+
+					cur++;
+
+					while (cur < insert.size() < insert.size() && insert[cur] == '1') {
+						cur++;
+					}
+				}
+				else {
+					return 0;
+				}
+			}
+			else {
+				return 0;
+			}
+		}
+		else if (insert[cur] == '0') {
+			if (cur + 1 < insert.size()) {
+				if (insert[cur + 1] == '0') {
+					if (cur - 2 >= 0 && insert[cur - 1] == '1' && insert[cur-2]=='1') {
+						cur -= 1;
+					}
+					else {
+						return 0;
+					}
+				}
+				else {
+					if (insert[cur + 1] == '1') {
+						cur += 2;
+					}
+					else {
+						return 0;
+					}
+				}
+			}
+			else {
+				return 0;
+			}
+		}
+	}
+
+	return 1;
+}
+
+int main(void) {
+
+	cin >> insert;
+
+	int result = val();
+
+	if (result == 0) {
+		printf("NOISE\n");
+	}
+	else {
+		printf("SUBMARINE\n");
+	}
+
+	return 0;
+}
