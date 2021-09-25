@@ -1,0 +1,54 @@
+#include<stdio.h>
+
+int n, s, m;
+int insert[110];
+bool result[110][1010];
+
+int find(void) {
+
+	for (int i = 1; i <= n; i++) {
+
+		if (i == 1) {
+			if (s - insert[i] >= 0) {
+				result[i][s - insert[i]] = true;
+			}
+			if (s + insert[i] <= m) {
+				result[i][s + insert[i]] = true;
+			}
+		}
+		else {
+			for (int j = 0; j <= 1000; j++) {
+				if (result[i-1][j] == true) {
+					if (j - insert[i] >= 0) {
+						result[i][j - insert[i]] = true;
+					}
+
+					if (j + insert[i] <= m) {
+						result[i][j + insert[i]] = true;
+					}
+				}
+			}
+		}
+	}
+
+	for (int i = m; i >= 0; i--) {
+		if (result[n][i] == true) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+int main(void) {
+
+	scanf("%d %d %d", &n, &s, &m);
+
+	for (int i = 1; i <= n; i++) {
+		scanf("%d", &insert[i]);
+	}
+
+	printf("%d\n", find());
+
+	return 0;
+}
