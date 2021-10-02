@@ -1,1 +1,122 @@
 #include<stdio.h>
+#include<queue>
+#include<vector>
+
+using namespace std;
+
+struct r {
+	int x;
+	int y;
+	int dir;
+};
+
+int n, m;
+int result = 0;
+int insert[55][55];
+bool clean[55][55];
+int xdir[4] = { -1,0,1,0 };
+int ydir[4] = { 0,1,0,-1 };
+r robot;
+
+int main(void) {
+
+	scanf("%d %d", &n, &m);
+
+	scanf("%d %d %d", &robot.x, &robot.y, &robot.dir);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			scanf("%d", &insert[i][j]);
+			if (insert[i][j] == 1) {
+				clean[i][j] = true;
+			}
+		}
+	}
+
+	while (1) {
+		bool curcheck = false;
+		int curdir = robot.dir;
+		if (clean[robot.x][robot.y] == false) {
+			clean[robot.x][robot.y] = true;
+			result++;
+		}
+
+		//printf("robotx : %d, roboty : %d, curdir : %d result : %d\n", robot.x, robot.y, curdir, result);
+
+		for (int i = 0; i < 4; i++) {
+			curdir--;
+			if (curdir < 0) {
+				curdir = 3;
+			}
+
+			int newx = robot.x + xdir[curdir];
+			int newy = robot.y + ydir[curdir];
+			
+			if (newx >= 0 && newy >= 0 && newx < n&&newy < m) {
+				if (insert[newx][newy] == 0 && clean[newx][newy] == false) {
+					//printf("move to %d %d, dir : %d\n", newx, newy, curdir);
+					curcheck = true;
+					robot.dir = curdir;
+					break;
+				}
+			}
+		}
+
+		if (curcheck == true) {
+			robot.x = robot.x + xdir[robot.dir];
+			robot.y = robot.y + ydir[robot.dir];
+		}
+		else {
+			int backx;
+			int backy;
+			if (robot.dir == 0) {
+				backx = robot.x + xdir[2];
+				backy = robot.y + ydir[2];
+			}
+			else if (robot.dir == 1) {
+				backx = robot.x + xdir[3];
+				backy = robot.y + ydir[3];
+			}
+			else if (robot.dir == 2) {
+				backx = robot.x + xdir[0];
+				backy = robot.y + ydir[0];
+			}
+			else if (robot.dir == 3) {
+				backx = robot.x + xdir[1];
+				backy = robot.y + ydir[1];
+			}
+
+			if (insert[backx][backy] == 1) {
+				break;
+			}
+
+			if (robot.dir == 0) {
+				robot.x += xdir[2];
+				robot.y += ydir[2];
+			}
+			else if (robot.dir == 1) {
+				robot.x += xdir[3];
+				robot.y += ydir[3];
+			}
+			else if (robot.dir == 2) {
+				robot.x += xdir[0];
+				robot.y += ydir[0];
+			}
+			else if (robot.dir == 3) {
+				robot.x += xdir[1];
+				robot.y += ydir[1];
+			}
+		}
+
+		/*for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				printf("%d ", clean[i][j]);
+			}
+			printf("\n");
+		}*/
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}
