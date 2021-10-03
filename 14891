@@ -1,0 +1,123 @@
+#include<stdio.h>
+#include<deque>
+
+using namespace std;
+
+deque<int> q[5];
+int result = 0;
+int k;
+
+int main(void) {
+
+	for (int i = 1; i <= 4; i++) {
+		for (int j = 0; j < 8; j++) {
+			int cur;
+			scanf("%1d", &cur);
+			q[i].push_back(cur);
+		}
+	}
+
+	scanf("%d", &k);
+
+	for (int i = 0; i < k; i++) {
+		int gear, dir;
+		int left;
+		int right;
+		int change[5] = { 0, };
+
+		scanf("%d %d", &gear, &dir);
+
+		change[gear] = dir;
+		left = gear - 1;
+		right = gear + 1;
+
+		while (left >= 1) {
+			if (change[left + 1] != 0) {
+				if (q[left][2] != q[left + 1][6]) {
+					if (change[left + 1] == 1) {
+						change[left] = -1;
+					}
+					else {
+						change[left] = 1;
+					}
+				}
+				else {
+					change[left] = 0;
+				}
+			}
+			else {
+				change[left] = 0;
+			}
+			left--;
+		}
+
+		while (right <= 4) {
+			if (change[right - 1] != 0) {
+				if (q[right - 1][2] != q[right][6]) {
+					if (change[right - 1] == 1) {
+						change[right] = -1;
+					}
+					else {
+						change[right] = 1;
+					}
+				}
+				else {
+					change[right] = 0;
+				}
+			}
+			else {
+				change[right] = 0;
+			}
+			right++;
+		}
+
+		for (int j = 1; j <= 4; j++) {
+			if (change[j] != 0) {
+				if (change[j] == 1) {
+					int cur = q[j].back();
+					q[j].pop_back();
+					q[j].push_front(cur);
+				}
+				else {
+					int cur = q[j].front();
+					q[j].pop_front();
+					q[j].push_back(cur);
+				}
+			}
+		}
+	}
+
+	/*for (int i = 1; i <= 4; i++) {
+		for (int j = 0; j < 8; j++) {
+			printf("%d ", q[i][j]);
+		}
+		printf("\n");
+	}*/
+
+	for (int i = 1; i <= 4; i++) {
+		if (i == 1) {
+			if (q[i][0] == 1) {
+				result += 1;
+			}
+		}
+		else if (i == 2) {
+			if (q[i][0] == 1) {
+				result += 2;
+			}
+		}
+		else if (i == 3) {
+			if (q[i][0] == 1) {
+				result += 4;
+			}
+		}
+		else {
+			if (q[i][0] == 1) {
+				result += 8;
+			}
+		}
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}
