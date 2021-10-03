@@ -1,0 +1,119 @@
+#include<stdio.h>
+#include<deque>
+
+using namespace std;
+
+struct dice {
+	int x;
+	int y;
+};
+
+int n, m, k;
+int insert[25][25];
+int num[7];
+int xdir[5] = { 0,0,0,-1,1 };
+int ydir[5] = { 0,1,-1,0,0 };
+int bottom = 6;
+dice d;
+
+deque<int> verti;
+deque<int> hori;
+
+int main(void) {
+
+	scanf("%d %d %d %d %d", &n, &m, &d.x, &d.y, &k);
+
+	verti.push_back(1);
+	verti.push_back(5);
+	verti.push_back(6);
+	verti.push_back(2);
+
+	hori.push_back(1);
+	hori.push_back(3);
+	hori.push_back(6);
+	hori.push_back(4);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			scanf("%d", &insert[i][j]);
+		}
+	}
+
+	for (int i = 0; i < k; i++) {
+		int dir;
+		scanf("%d", &dir);
+
+		int newx = d.x + xdir[dir];
+		int newy = d.y + ydir[dir];
+
+		if (newx >= 0 && newy >= 0 && newx < n&&newy < m) {
+			if (dir == 1) {
+				int cur = hori.back();
+				hori.pop_back();
+				hori.push_front(cur);
+				verti[0] = hori[0];
+				verti[2] = hori[2];
+			}
+			else if (dir == 2) {
+				int cur = hori.front();
+				hori.pop_front();
+				hori.push_back(cur);
+				verti[0] = hori[0];
+				verti[2] = hori[2];
+			}
+			else if (dir == 3) {
+				int cur = verti.front();
+				verti.pop_front();
+				verti.push_back(cur);
+				hori[0] = verti[0];
+				hori[2] = verti[2];
+			}
+			else {
+				int cur = verti.back();
+				verti.pop_back();
+				verti.push_front(cur);
+				hori[0] = verti[0];
+				hori[2] = verti[2];
+			}
+
+			/*printf("newx : %d, newy : %d\n", newx, newy);
+			printf("verti:\n");
+			for (int i = 0; i < 4; i++) {
+				printf("%d ", verti[i]);
+			}
+			printf("\n");
+
+			printf("hori:\n");
+			for (int i = 0; i < 4; i++) {
+				printf("%d ", hori[i]);
+			}
+			printf("\n");*/
+
+			if (insert[newx][newy] == 0) {
+				insert[newx][newy] = num[verti[2]];
+			}
+			else {
+				num[verti[2]] = insert[newx][newy];
+				insert[newx][newy] = 0;
+			}
+
+
+			/*printf("num:\n");
+			for (int i = 1; i <= 6; i++) {
+				printf("%d ", num[i]);
+			}
+			printf("\n");*/
+
+			printf("%d\n", num[verti[0]]);
+		}
+		else {
+			continue;
+		}
+
+		d.x = newx;
+		d.y = newy;
+	}
+
+
+	return 0;
+}
