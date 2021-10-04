@@ -1,0 +1,116 @@
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+int n;
+int insert[25][25];
+int result = 100000000;
+
+void find(int x, int y, int d1, int d2) {
+	int part[25][25];
+	int curresult[6] = { 0, };
+	int curmax = -1;
+	int curmin = 10000000;
+
+	//printf("x : %d, y : %d, d1 : %d, d2 : %d\n", x, y, d1, d2);
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			part[i][j] = 5;
+		}
+	}
+
+	int onecount = 0;
+	for (int i = 1; i < x + d1; i++) {
+		if (i >= x) {
+			onecount++;
+		}
+		for (int j = 1; j <= y-onecount; j++) {
+			part[i][j] = 1;
+		}
+	}
+
+	int twocount = 0;
+	for (int i = 0; i <= x+d2; i++) {
+		if (i > x) {
+			twocount++;
+		}
+		for (int j = y+twocount+1; j <= n; j++) {
+			part[i][j] = 2;
+		}
+	}
+
+	int threecount = 0;
+	for (int i = n; i >= x + d1; i--) {
+		if (i < x + d1 + d2) {
+			threecount++;
+		}
+		for (int j = 1; j < y - d1 + d2 - threecount;  j++) {
+			part[i][j] = 3;
+		}
+	}
+
+	int fourcount = 0;
+	for (int i = n; i > x + d2; i--) {
+		if (i <= x + d1 + d2) {
+			fourcount++;
+		}
+		for (int j = y - d1 + d2 + fourcount; j <= n; j++) {
+			part[i][j] = 4;
+		}
+	}
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			curresult[part[i][j]] += insert[i][j];
+		}
+	}
+	
+
+	/*for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			printf("%d ", part[i][j]);
+		}
+		printf("\n");
+	}*/
+
+	for (int i = 1; i <= 5; i++) {
+		curmin = min(curmin, curresult[i]);
+		curmax = max(curmax, curresult[i]);
+	}
+
+	//printf("curmax : %d, curmin : %d\n", curmax, curmin);
+	if (curmax - curmin < result) {
+		//printf("result change %d to %d\n", result, curmax - curmin);
+		result = curmax - curmin;
+	}
+	//printf("\n");
+}
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++){
+			scanf("%d", &insert[i][j]);
+		}
+	}
+
+	for (int x = 1; x <= n; x++) {
+		for (int y = 1; y <= n; y++) {
+			for (int d1 = 1; d1 <= n; d1++) {
+				for (int d2 = 1; d2 <= n; d2++) {
+					if (x + d1 + d2 <= n && (y - d1 >= 1 && y + d2 <= n)) {
+						find(x, y, d1, d2);
+					}
+				}
+			}
+		}
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}
