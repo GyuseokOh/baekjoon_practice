@@ -1,0 +1,171 @@
+#include<stdio.h>
+#include<vector>
+#include<queue>
+#include<deque>
+
+using namespace std;
+
+struct input {
+	int x;
+	int y;
+};
+
+int n, m, t;
+int xdir[4] = { 1,-1,0,0 };
+int ydir[4] = { 0,0,1,-1 };
+bool flag = false;
+deque<int> q[55];
+
+void bfs(int x, int y) {
+	bool check[55][55] = { false };
+	vector<input> v;
+	queue<input> qq;
+
+	v.push_back({ x,y });
+	qq.push({ x,y });
+	check[x][y] = true;
+
+	while (qq.empty() != true) {
+		int curx = qq.front().x;
+		int cury = qq.front().y;
+		//printf("curx : %d, cury  :%d\n", curx, cury);
+		qq.pop();
+
+		for (int i = 0; i < 4; i++) {
+			int newx = curx + xdir[i];
+			int newy = cury + ydir[i];
+
+			//printf("1 newx : %d, newy : %d\n", newx, newy);
+
+			if (newx >= 1 && newx <= n) {
+				if (newy<0) {
+					newy = q[newx].size() - 1;
+				}
+				if (newy >= m) {
+					newy = 0;
+				}
+
+				//printf("2 newx : %d, newy : %d\n", newx, newy);
+
+				if (check[newx][newy] == false && q[curx][cury] == q[newx][newy]) {
+					qq.push({ newx, newy });
+					v.push_back({ newx,newy });
+					check[newx][newy] = true;
+					//printf("curx : %d, cury : %d, newx : %d, newy : %d\n", curx, cury, newx, newy);
+				}
+			}
+		}
+	}
+
+	if (v.size() != 1) {
+		for (int i = 0; i < v.size(); i++) {
+			q[v[i].x][v[i].y] = 0;
+		}
+		flag = true;
+	}
+}
+
+int main(void) {
+	
+	scanf("%d %d %d", &n, &m, &t);
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 0; j < m; j++) {
+			int cur;
+			scanf("%d", &cur);
+			q[i].push_back(cur);
+		}
+	}
+
+	for (int p = 0; p < t; p++) {
+		int x, d, k;
+		scanf("%d %d %d", &x, &d, &k);
+
+		flag = false;
+
+		for (int i = 1; i <= n; i++) {
+			if (i%x == 0) {
+				for (int j = 0; j < k; j++) {
+					if (d == 0) {
+						int cur = q[i].back();
+						q[i].pop_back();
+						q[i].push_front(cur);
+					}
+					else if (d == 1) {
+						int cur = q[i].front();
+						q[i].pop_front();
+						q[i].push_back(cur);
+					} 
+				}
+			}
+		}
+
+		/*for (int i = 1; i <= n; i++) {
+			for (int j = 0; j < q[i].size(); j++) {
+				printf("%d ", q[i][j]);
+			}
+			printf("\n");
+		}
+		printf("\n");*/
+
+		for (int i = 1; i <= n; i++) {
+			for (int j = 0; j < q[i].size(); j++) {
+				if (q[i][j] != 0) {
+					//printf("bfs %d %d\n", i, j);
+					bfs(i, j);
+					/*for (int i = 1; i <= n; i++) {
+						for (int j = 0; j < q[i].size(); j++) {
+							printf("%d ", q[i][j]);
+						}
+						printf("\n");
+					}
+					printf("\n");*/
+				}
+			}
+		}
+
+		if (flag == false) {
+			double num = 0;
+			double count = 0;
+			double ave;
+			for (int i = 1; i <= n; i++) {
+				for (int j = 0; j < q[i].size(); j++) {
+					if (q[i][j] != 0) {
+						num += q[i][j];
+						count++;
+					}
+				}
+			}
+
+			ave = num / count;
+
+			for (int i = 1; i <= n; i++) {
+				for (int j = 0; j < q[i].size(); j++) {
+					if (q[i][j] != 0) {
+						if (q[i][j] > ave) {
+							q[i][j]--;
+						}
+						else if (q[i][j] < ave) {
+							q[i][j]++;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	int result = 0;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 0; j < q[i].size(); j++) {
+			//printf("%d ", q[i][j]);
+			if (q[i][j] != 0) {
+				result += q[i][j];
+			}
+		}
+		//printf("\n");
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}
