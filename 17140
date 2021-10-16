@@ -1,0 +1,154 @@
+#include<stdio.h>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+
+struct s {
+	int num;
+	int count;
+};
+
+int insert[110][110];
+int row = 3;
+int col = 3;
+int r, c, k;
+int time = 0;
+
+bool inc(s a, s b) {
+	if (a.count == b.count) {
+		return a.num < b.num;
+	}
+
+	return a.count < b.count;
+}
+
+int main(void) {
+
+	scanf("%d %d %d", &r, &c, &k);
+
+	for (int i = 1; i <= 3; i++) {
+		for (int j = 1; j <= 3; j++) {
+			scanf("%d", &insert[i][j]);
+		}
+	}
+
+	while (1) {
+		if (insert[r][c] == k) {
+			break;
+		}
+
+		if (time > 100) {
+			break;
+		}
+
+		if (row >= col) {
+			int maxcol = col;
+			for (int i = 1; i <= row; i++) {
+				int check[110] = { 0, };
+				int colcount = 1;
+				vector<s> v;
+				for (int j = 1; j <= col; j++) {
+					check[insert[i][j]]++;
+				}
+
+				for (int j = 1; j <= 100; j++) {
+					if (check[j] > 0) {
+						v.push_back({ j,check[j] });
+					}
+				}
+
+				sort(v.begin(), v.end(), inc);
+
+				for (int j = 1; j <= 100; j++) {
+					insert[i][j] = 0;
+				}
+
+				for (int j = 0; j < v.size(); j++) {
+					insert[i][colcount] = v[j].num;
+					insert[i][colcount + 1] = v[j].count;
+					colcount += 2;
+					if (colcount > 100) {
+						break;
+					}
+				}
+
+				int size = v.size();
+				size = min(size*2, 100);
+
+				//printf("size : %d, maxcol : %d\n", size, maxcol);
+
+				if (size > maxcol) {
+					maxcol = size;
+				}
+			}
+			if (maxcol > col) {
+				col = maxcol;
+			}
+		}
+		else {
+			int maxrow = row;
+			for (int i = 1; i <= col; i++) {
+				int check[110] = { 0, };
+				int rowcount = 1;
+				vector<s> v;
+				for (int j = 1; j <= row; j++) {
+					check[insert[j][i]]++;
+				}
+
+				for (int j = 1; j <= 100; j++) {
+					if (check[j] > 0) {
+						v.push_back({ j,check[j] });
+					}
+				}
+
+				sort(v.begin(), v.end(), inc);
+
+				for (int j = 1; j <= 100; j++) {
+					insert[j][i] = 0;
+				}
+
+				for (int j = 0; j < v.size(); j++) {
+					insert[rowcount][i] = v[j].num;
+					insert[rowcount+1][i] = v[j].count;
+					rowcount += 2;
+					if (rowcount > 100) {
+						break;
+					}
+				}
+
+				int size = v.size();
+				size = min(size*2, 100);
+
+				//printf("size : %d, maxrow : %d\n", size, maxrow);
+
+				if (size > maxrow) {
+					maxrow = size;
+				}
+			}
+			if (maxrow > row) {
+				row = maxrow;
+			}
+		}
+
+		/*for (int i = 1; i <= row; i++) {
+			for (int j = 1; j <= col; j++) {
+				printf("%d ", insert[i][j]);
+			}
+			printf("\n");
+		}
+
+		printf("\n");*/
+
+		time++;
+	}
+
+	if (time > 100) {
+		printf("-1\n");
+	}
+	else {
+		printf("%d\n", time);
+	}
+
+	return 0;
+}
