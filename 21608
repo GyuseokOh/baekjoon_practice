@@ -1,0 +1,132 @@
+#include<stdio.h>
+#include<map>
+#include<vector>
+
+using namespace std;
+
+int n;
+int result = 0;
+int insert[25][25];
+bool check[410][410];
+int xdir[4] = { 1,-1,0,0 };
+int ydir[4] = { 0,0,1,-1 };
+vector<int> v[410];
+
+int main(void) {
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n*n; i++) {
+		int a;
+		int maxf = -1;
+		int maxb = -1;
+		int resultx;
+		int resulty;
+
+		scanf("%d", &a);
+		for (int j = 0; j < 4; j++) {
+			int b;
+			scanf("%d", &b);
+			v[a].push_back(b);
+			check[a][b] = true;
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (insert[i][j] == 0) {
+					int fnum = 0;
+					int bnum = 0;
+					for (int t = 0; t < 4; t++) {
+						int newx = i + xdir[t];
+						int newy = j + ydir[t];
+
+						if (newx >= 0 && newy >= 0 && newx < n && newy < n) {
+							if (insert[newx][newy] != 0) {
+								if (check[a][insert[newx][newy]] == true) {
+									fnum++;
+								}
+							}
+							else {
+								bnum++;
+							}
+						}
+					}
+
+					//printf("i : %d, j : %d, fnum : %d, bnum : %d,maxf : %d, maxb : %d\n", i, j, fnum, bnum, maxf, maxb);
+
+					if (fnum > maxf) {
+						maxf = fnum;
+						maxb = bnum;
+						resultx = i;
+						resulty = j;
+					}
+					else if (fnum == maxf) {
+						if (bnum > maxb) {
+							maxb = bnum;
+							resultx = i;
+							resulty = j;
+						}
+						else if (bnum == maxb) {
+							if (i < resultx) {
+								resultx = i;
+								resulty = j;
+							}
+							else if (i == resultx) {
+								if (j < resulty) {
+									resulty = j;
+								}
+							}
+						}
+					}
+
+					//printf("resultx : %d, resulty : %d\n", resultx, resulty);
+				}
+			}
+		}
+
+		insert[resultx][resulty] = a;
+
+		/*for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				printf("%d ", insert[i][j]);
+			}
+			printf("\n");
+		}*/
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			int count = 0;
+			for (int t = 0; t < 4; t++) {
+				int newx = i + xdir[t];
+				int newy = j + ydir[t];
+
+				if (newx >= 0 && newy >= 0 && newx < n&&newy < n) {
+					if (check[insert[i][j]][insert[newx][newy]] == true) {
+						count++;
+					}
+				}
+			}
+
+			if (count == 0) {
+				result += 0;
+			}
+			else if (count == 1) {
+				result += 1;
+			}
+			else if (count == 2) {
+				result += 10;
+			}
+			else if (count == 3) {
+				result += 100;
+			}
+			else if (count == 4) {
+				result += 1000;
+			}
+		}
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}
