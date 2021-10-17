@@ -1,0 +1,228 @@
+#include<stdio.h>
+#include<vector>
+#include<queue>
+
+using namespace std;
+
+struct s {
+	int x;
+	int y;
+};
+
+int n, m;
+int result = 0;
+int insert[25][25];
+bool check[25][25];
+int xdir[4] = { 1,-1,0,0 };
+int ydir[4] = { 0,0,1,-1 };
+queue<s> q;
+
+void rotate(void) {
+	int cinsert[25][25];
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cinsert[i][j] = insert[j][n - i - 1];
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			insert[i][j] = cinsert[i][j];
+		}
+	}
+}
+
+void gravity(void) {
+	for (int i = n - 1; i >= 0; i--) {
+		for (int j = 0; j < n; j++) {
+			if (insert[i][j] >= 0) {
+				int cur = i;
+				while (cur + 1 < n&&insert[cur + 1][j] == -3) {
+					insert[cur + 1][j] = insert[cur][j];
+					insert[cur][j] = -3;
+					cur++;
+				}
+			}
+		}
+	}
+}
+
+int main(void) {
+
+	scanf("%d %d", &n, &m);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%d", &insert[i][j]);
+		}
+	}
+
+	while (1) {
+		int size = -1;
+		int rainbow = -1;
+		int mainx;
+		int mainy;
+		int resultx;
+		int resulty;
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (insert[i][j] > 0) {
+					int curmainx = i;
+					int curmainy = j;
+					int curcolor = insert[i][j];
+					int cursize = 0;
+					int currainbow = 0;
+					for (int t = 0; t < n; t++) {
+						for (int p = 0; p < n; p++) {
+							check[t][p] = false;
+						}
+					}
+					q.push({ i,j });
+					check[i][j] = true;
+					cursize++;
+
+					while (q.empty() != true) {
+						int curx = q.front().x;
+						int cury = q.front().y;
+						q.pop();
+
+						for (int t = 0; t < 4; t++) {
+							int newx = curx + xdir[t];
+							int newy = cury + ydir[t];
+
+							if (newx >= 0 && newy >= 0 && newx < n&&newy < n) {
+								if ((insert[newx][newy] == curcolor || insert[newx][newy] == 0) && check[newx][newy] == false) {
+									cursize++;
+									if (insert[newx][newy] == 0) {
+										currainbow++;
+									}
+									
+									if (insert[newx][newy] > 0) {
+										if (newx < curmainx) {
+											curmainx = newx;
+											curmainy = newy;
+										}
+										else if (newx == curmainx) {
+											if (newy < curmainy) {
+												curmainy = newy;
+											}
+										}
+									}
+
+									q.push({ newx,newy });
+									check[newx][newy] = true;
+								}
+							}
+						}
+					}
+
+					if (cursize > size) {
+						resultx = i;
+						resulty = j;
+						size = cursize;
+						rainbow = currainbow;
+						mainx = curmainx;
+						mainy = curmainy;
+					}
+					else if (cursize == size) {
+						if (currainbow > rainbow) {
+							resultx = i;
+							resulty = j;
+							size = cursize;
+							rainbow = currainbow;
+							mainx = curmainx;
+							mainy = curmainy;
+						}
+						else if (currainbow == rainbow) {
+							if (mainx < curmainx) {
+								resultx = i;
+								resulty = j;
+								size = cursize;
+								rainbow = currainbow;
+								mainx = curmainx;
+								mainy = curmainy;
+							}
+							else if (mainx == curmainx) {
+								if (mainy < curmainy) {
+									resultx = i;
+									resulty = j;
+									size = cursize;
+									rainbow = currainbow;
+									mainx = curmainx;
+									mainy = curmainy;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (size < 2) {
+			break;
+		}
+
+		result += (size*size);
+
+		int color = insert[resultx][resulty];
+		insert[resultx][resulty] = -3;
+		q.push({ resultx,resulty });
+		while (q.empty() != true) {
+			int curx = q.front().x;
+			int cury = q.front().y;
+			q.pop();
+
+			for (int t = 0; t < 4; t++) {
+				int newx = curx + xdir[t];
+				int newy = cury + ydir[t];
+
+				if (newx >= 0 && newy >= 0 && newx < n&&newy < n) {
+					if (insert[newx][newy] == color || insert[newx][newy] == 0) {
+						insert[newx][newy] = -3;
+						q.push({ newx,newy });
+					}
+				}
+			}
+		}
+		/*printf("after block\n");
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				printf("%d ", insert[i][j]);
+			}
+			printf("\n");
+		}*/
+
+		gravity();
+		/*printf("after gravity1\n");
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				printf("%d ", insert[i][j]);
+			}
+			printf("\n");
+		}*/
+		rotate();
+		/*printf("after rotate\n");
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				printf("%d ", insert[i][j]);
+			}
+			printf("\n");
+		}*/
+		gravity();
+		/*printf("after gravity2\n");
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				printf("%d ", insert[i][j]);
+			}
+			printf("\n");
+		}
+		printf("result : %d\n", result);
+		printf("\n");*/
+	}
+
+	printf("%d\n", result);
+
+	return 0;
+}
